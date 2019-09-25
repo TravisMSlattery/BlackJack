@@ -34,52 +34,52 @@ public class Deck {
             }
 
         }
-    }
-
-    public void shuffle() {
-
-        Random rng = new Random();
-        Card temp;
-        if(shuffle){
+        if (shuffle) {
             this.shuffle();
         }
 
-        int j;
-        for (int i = 0; i < this.numCards; i++) {
+    }
+        public void shuffle() {
 
-            j = rng.nextInt(this.numCards);
+            Random rng = new Random();
+            Card temp;
 
-            temp = this.myCards[i];
-            this.myCards[i] = this.myCards[j];
-            this.myCards[j] = temp;
+            int j;
+            for (int i = 0; i < this.numCards; i++) {
+
+                j = rng.nextInt(this.numCards);
+
+                temp = this.myCards[i];
+                this.myCards[i] = this.myCards[j];
+                this.myCards[j] = temp;
+            }
+
+        }
+
+
+        public Card dealNextCard() {
+            Card top = this.myCards[0];
+
+            for (int c = 1; c < this.numCards; c++) {
+                this.myCards[c - 1] = this.myCards[c];
+            }
+
+            this.myCards[this.numCards - 1] = null;
+
+            this.numCards--;
+
+            return top;
+        }
+
+        public void printDeck ( int numToPrint){
+            for (int c = 0; c < numToPrint; c++) {
+                System.out.printf("%3d/%d %s\n", c + 1, this.numCards, this.myCards[c].toString());
+            }
+            System.out.printf("\t\t[%d other]\n", this.numCards - numToPrint);
         }
 
     }
 
-
-
-    public Card dealNextCard() {
-        Card top = this.myCards[0];
-
-        for (int c = 1; c < this.numCards; c++) {
-            this.myCards[c - 1] = this.myCards[c];
-        }
-
-        this.myCards[this.numCards - 1] = null;
-
-        this.numCards--;
-
-        return top;
-    }
-
-    public void printDeck(int numToPrint) {
-        for (int c = 0; c < numToPrint; c++) {
-            System.out.printf("%3d/%d %s\n", c + 1, this.numCards, this.myCards[c].toString());
-        }
-        System.out.printf("\t\t[%d other]\n", this.numCards - numToPrint);
-    }
-
-}
 
 
 
