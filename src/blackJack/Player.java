@@ -29,7 +29,7 @@ public class Player {
     public boolean addCard(Card aCard){
 
         if (this.numCards == 10){
-            System.err.printf("%s's hand already has 10 cards cannot add another card\n", this.name);
+            System.err.printf("%s' hand already has 10 cards cannot add another card\n", this.name);
 
             System.exit(1);
         }
@@ -70,7 +70,7 @@ public class Player {
     }
 
     public void printHand(boolean showFirstCard){
-        System.out.printf("%s's cards :\n", this.name);
+        System.out.printf("\n%s cards :\n", this.name);
         for (int c =0; c < this.numCards; c++){
             if (c == 0 && !showFirstCard){
                 System.out.println("    [HIDDEN]");

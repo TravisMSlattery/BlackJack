@@ -9,7 +9,7 @@ public class Deck {
 
     // no shuffle constructor
     public Deck() {
-        this(1, false);
+        this(6, false);
     }
 
     public Deck(int numDecks, boolean shuffle) {
