@@ -10,6 +10,8 @@ public class Player {
 
     private int numCards;
 
+    public int balance;
+
 
     public Player(String aName){
 
@@ -81,20 +83,22 @@ public class Player {
             }
         }
     }
+
     public int playerBalance(){
         int mySum = getHandSum();
         int dealerSum = getHandSum();
-        int balance = 1000;
+        balance=1000;
 
-        if (mySum > dealerSum && mySum <= 21 || dealerSum > 21) {
-            System.out.println("\nYou Win!" + "\nYour Balance is €" + (balance += 200));
-        } else if ((mySum == dealerSum) && (mySum <= 21 && dealerSum <= 21)) {
-            System.out.println("A TIE!" + "\nYou Balance is €" + balance);
+
+        if (mySum > dealerSum && mySum <= 21 || dealerSum > 21){
+            balance = balance + 200;
+        }else if ((mySum == dealerSum) && (mySum <= 21 && dealerSum <= 21)){
+            balance = balance;
         } else {
-            System.out.println("\nDealer Win!" + "\nYou Balance is €" + (balance -= 100));
-
+            balance = balance - 100;
         }
-            return balance;
+
+        return balance;
     }
 
 }
