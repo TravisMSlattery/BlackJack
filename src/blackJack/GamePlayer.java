@@ -75,7 +75,7 @@ public class GamePlayer {
 
                 int mySum = me.getHandSum();
                 int dealerSum = dealer.getHandSum();
-                int myBalance = me.playerBalance();
+                int myBalance = me.playerBalance(me.getBalance());
 
 
                 if (mySum > dealerSum && mySum <= 21 || dealerSum > 21) {

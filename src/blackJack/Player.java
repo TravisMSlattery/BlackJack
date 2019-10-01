@@ -16,7 +16,7 @@ public class Player {
     public Player(String aName){
 
         this.name = aName;
-
+        this.balance = 1000;
         this.emptyHand();
     }
 
@@ -83,19 +83,19 @@ public class Player {
             }
         }
     }
+    public void setBalance(int balance){this.balance=balance;}
+    public int getBalance(){return balance;}
 
-    public int playerBalance(){
+    public int playerBalance(int balance){
         int mySum = getHandSum();
         int dealerSum = getHandSum();
-        balance=1000;
 
-
-        if (mySum > dealerSum && mySum <= 21 || dealerSum > 21){
-            balance = balance + 200;
+        if ((mySum > dealerSum )&& (mySum <= 21 || dealerSum > 21)){
+            balance += 200;
         }else if ((mySum == dealerSum) && (mySum <= 21 && dealerSum <= 21)){
             balance = balance;
         } else {
-            balance = balance - 100;
+            balance -=  100;
         }
 
         return balance;
