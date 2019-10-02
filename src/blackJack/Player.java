@@ -1,14 +1,12 @@
 package blackJack;
 
-import blackJack.Card;
-
 public class Player {
 
     private String name;
 
     private Card[] hand = new Card[10];
 
-    private int numCards;
+    public int numCards;
 
     public int balance;
 
@@ -38,7 +36,7 @@ public class Player {
         }
 
         this.hand[this.numCards] = aCard;
-        this. numCards++;
+        this.numCards++;
 
         return(this.getHandSum() <=21);
 
@@ -72,6 +70,7 @@ public class Player {
         return handSum;
     }
 
+
     public void printHand(boolean showFirstCard){
         System.out.printf("\n%s cards :\n", this.name);
         for (int c =0; c < this.numCards; c++){
@@ -86,19 +85,22 @@ public class Player {
     public void setBalance(int balance){this.balance=balance;}
     public int getBalance(){return balance;}
 
-    public int playerBalance(int balance){
-        int mySum = getHandSum();
+    //public int playerBalance(int balance){
+    public int playerBalance(){
+        /*int mySum = getHandSum();
         int dealerSum = getHandSum();
 
-        if ((mySum > dealerSum )&& (mySum <= 21 || dealerSum > 21)){
-            balance += 200;
-        }else if ((mySum == dealerSum) && (mySum <= 21 && dealerSum <= 21)){
-            balance = balance;
+        if (mySum > dealerSum && mySum <= 21 || dealerSum > 21){
+            this.balance = balance + 200;
+        }else if (mySum == dealerSum && mySum <= 21 && dealerSum <= 21){
+            this.balance = balance;
         } else {
-            balance -=  100;
+            this.balance = balance - 100;
         }
 
-        return balance;
+        return this.balance;*/
+
+        //this method
     }
 
 }
