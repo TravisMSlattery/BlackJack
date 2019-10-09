@@ -12,7 +12,7 @@ public class Player {
 
 
     public Player(String aName){
-        this.balance=1000;
+        balance=1000;
         this.name = aName;
         this.emptyHand();
     }
@@ -83,22 +83,24 @@ public class Player {
     }
 
     //public int playerBalance(int balance){
-    public int playerBalance(){
+   /* public int playerBalance(){
+       // this.balance = balance;
         int mySum = getHandSum();
         int dealerSum = getHandSum();
 
-        if (mySum > dealerSum && mySum <= 21 || dealerSum > 21){
-            this.balance += 200;
+        if (mySum > dealerSum ){
+            this.balance += 100;
         }else if (mySum == dealerSum && mySum <= 21 && dealerSum <= 21){
             this.balance = balance;
         } else {
             this.balance -= 100;
+
         }
 
         return this.balance;
 
         //this method
-    }
+    }*/
     public void setBalance(int balance){
         this.balance = balance;
     }
@@ -106,5 +108,9 @@ public class Player {
         return balance;
     }
 
+    public void incBalance(){ this.balance = balance + 100; }
 
+    public void dicBalance(){ this.balance = balance -100; }
+
+    //public void tieBalance(int balance){ this.balance = balance;}
 }

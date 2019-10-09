@@ -8,7 +8,7 @@ public class GamePlayer {
 
         Player dealer = new Player("Dealer");
         Player me = new Player("Travis");
-        int myBalance = me.playerBalance();
+        int myBalance = me.getBalance();
         Scanner sc = new Scanner(System.in);
 
 
@@ -36,11 +36,12 @@ public class GamePlayer {
                 dealer.printHand(false);
                 System.out.println("\n");
                 if (me.getHandSum() == 21 && dealer.getHandSum() != 21) {
-                    System.out.println("\nYou Win!" + "\nYour Balance is €" + myBalance);
+                    me.incBalance();
+                    System.out.println("\nYou Win!" + "\nYour Balance is €" + me.getBalance());
                     System.out.println("You have: " + me.getHandSum() + "\n");
+                    boolean meDone = true;
                     me.emptyHand();
                     dealer.emptyHand();
-                    boolean meDone = true;
                 } else {
                     boolean meDone = false;
                     boolean dealerDone = false;
@@ -88,11 +89,14 @@ public class GamePlayer {
 
 
                     if (mySum > dealerSum && mySum <= 21 || dealerSum > 21) {
-                        System.out.println("\nYou Win!" + "\nYour Balance is €" + myBalance);
-                    } else if (mySum == dealerSum && mySum <= 21 && dealerSum <= 21) {
-                        System.out.println("\nA TIE!" + "\nYour Balance is €" + myBalance);
+                        me.incBalance();
+                        System.out.println("\nYou Win!" + "\nYour Balance is €" + me.getBalance());
+                    } else if (dealerSum > mySum && dealerSum <= 21 || mySum> 21) {
+                        me.dicBalance();
+                        System.out.println("\nDealer Win!" + "\nYour Balance is €" + me.getBalance());
                     } else {
-                        System.out.println("\nDealer Win!" + "\nYour Balance is €" + myBalance);
+                        System.out.println("\nA TIE!" + "\nYour Balance is €" + me.getBalance());
+
 
                     }
                     me.emptyHand();
