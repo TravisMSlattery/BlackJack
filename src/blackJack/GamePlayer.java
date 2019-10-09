@@ -2,11 +2,13 @@ package blackJack;
 import java.util.Scanner;
 
 
+
 public class GamePlayer {
     public static void main(String[] args) {
 
         Player dealer = new Player("Dealer");
         Player me = new Player("Travis");
+        int myBalance = me.playerBalance();
         Scanner sc = new Scanner(System.in);
 
 
@@ -33,7 +35,11 @@ public class GamePlayer {
                 me.printHand(true);
                 dealer.printHand(false);
                 System.out.println("\n");
-                if (me.getHandSum() == 21) {
+                if (me.getHandSum() == 21 && dealer.getHandSum() != 21) {
+                    System.out.println("\nYou Win!" + "\nYour Balance is €" + myBalance);
+                    System.out.println("You have: " + me.getHandSum() + "\n");
+                    me.emptyHand();
+                    dealer.emptyHand();
                     boolean meDone = true;
                 } else {
                     boolean meDone = false;
@@ -79,12 +85,11 @@ public class GamePlayer {
 
                     int mySum = me.getHandSum();
                     int dealerSum = dealer.getHandSum();
-                    int myBalance = me.playerBalance(me.getBalance());
 
 
                     if (mySum > dealerSum && mySum <= 21 || dealerSum > 21) {
                         System.out.println("\nYou Win!" + "\nYour Balance is €" + myBalance);
-                    } else if ((mySum == dealerSum) && (mySum <= 21 && dealerSum <= 21)) {
+                    } else if (mySum == dealerSum && mySum <= 21 && dealerSum <= 21) {
                         System.out.println("\nA TIE!" + "\nYour Balance is €" + myBalance);
                     } else {
                         System.out.println("\nDealer Win!" + "\nYour Balance is €" + myBalance);
@@ -94,10 +99,10 @@ public class GamePlayer {
                     dealer.emptyHand();
 
 
-                } else{
-                    System.exit(0);
                 }
 
+                } else {
+                System.exit(0);
             }
         }
     }

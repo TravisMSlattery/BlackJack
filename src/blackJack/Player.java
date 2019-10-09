@@ -12,9 +12,8 @@ public class Player {
 
 
     public Player(String aName){
-
+        this.balance=1000;
         this.name = aName;
-        this.balance = 1000;
         this.emptyHand();
     }
 
@@ -73,7 +72,7 @@ public class Player {
 
     public void printHand(boolean showFirstCard){
         System.out.printf("\n%s cards :\n", this.name);
-        for (int c =0; c < this.numCards; c++){
+        for (int c = 0; c < this.numCards; c++){
             if (c == 0 && !showFirstCard){
                 System.out.println("    [HIDDEN]");
             } else {
@@ -82,25 +81,30 @@ public class Player {
             }
         }
     }
-    public void setBalance(int balance){this.balance=balance;}
-    public int getBalance(){return balance;}
 
     //public int playerBalance(int balance){
     public int playerBalance(){
-        /*int mySum = getHandSum();
+        int mySum = getHandSum();
         int dealerSum = getHandSum();
 
         if (mySum > dealerSum && mySum <= 21 || dealerSum > 21){
-            this.balance = balance + 200;
+            this.balance += 200;
         }else if (mySum == dealerSum && mySum <= 21 && dealerSum <= 21){
             this.balance = balance;
         } else {
-            this.balance = balance - 100;
+            this.balance -= 100;
         }
 
-        return this.balance;*/
+        return this.balance;
 
         //this method
     }
+    public void setBalance(int balance){
+        this.balance = balance;
+    }
+    public int getBalance(){
+        return balance;
+    }
+
 
 }
