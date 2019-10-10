@@ -1,33 +1,73 @@
 package blackJack;
 import java.util.Scanner;
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.*;
 
 
 
 public class GamePlayer {
     public static void main(String[] args) {
 
+        JFrame jFrameWindow;
+        jFrameWindow = new JFrame("Enter Details");
+        FlowLayout flowLayout = new FlowLayout();
+        jFrameWindow.setLayout(flowLayout);
+        jFrameWindow.setSize(720,720);
+        jFrameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JLabel dealerLabel = new JLabel("Dealer");
+        jFrameWindow.add(dealerLabel);
+        JLabel playerLabel = new JLabel("Player");
+        jFrameWindow.add(playerLabel);
+        JButton hitButton = new JButton("Hit!");
+        jFrameWindow.add(hitButton);
+        JButton stayButton = new JButton("Stick!");
+        jFrameWindow.add(stayButton);
+        JButton dblButton = new JButton("Double!");
+        jFrameWindow.add(dblButton);
+        JButton splitButton = new JButton("Split!");
+        jFrameWindow.add(splitButton);
+        JButton yesButton = new JButton("Yes");
+        jFrameWindow.add(yesButton);
+        JButton noButton = new JButton("No");
+        jFrameWindow.add(noButton);
+        ButtonEventHandler hitHandler = new ButtonEventHandler();
+        hitButton.addActionListener(hitHandler);
+        ButtonEventHandler stayHandler = new ButtonEventHandler();
+        stayButton.addActionListener(stayHandler);
+        ButtonEventHandler dblHandler = new ButtonEventHandler();
+        hitButton.addActionListener(dblHandler);
+        ButtonEventHandler splitHandler = new ButtonEventHandler();
+        hitButton.addActionListener(splitHandler);
+        ButtonEventHandler yesHandler = new ButtonEventHandler();
+        hitButton.addActionListener(yesHandler);
+        ButtonEventHandler noHandler = new ButtonEventHandler();
+        hitButton.addActionListener(noHandler);
+
+        jFrameWindow.setVisible(true);
+
         Player dealer = new Player("Dealer");
         Player me = new Player("Travis");
+
         int myBalance = me.getBalance();
         Scanner sc = new Scanner(System.in);
 
 
-        while (me.getBalance() != 0) {
-
             Deck theDeck = new Deck(6, true);
             String ans = "Y";
 
+        while (me.getBalance() != 0) {
+            System.out.print("Bet or Leave? (Enter Y or N): ");
+            ans = sc.next();
 
             if (ans.compareToIgnoreCase("Y") == 0) {
-                System.out.print("Bet or Leave? (Enter Y or N): ");
-                ans = sc.next();
-
 
                 //deal cards
                 me.addCard(theDeck.dealNextCard());
                 dealer.addCard(theDeck.dealNextCard());
                 me.addCard(theDeck.dealNextCard());
                 dealer.addCard(theDeck.dealNextCard());
+
 
 
                 //print hands

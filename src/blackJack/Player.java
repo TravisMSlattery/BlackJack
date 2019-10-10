@@ -15,6 +15,7 @@ public class Player {
         balance=1000;
         this.name = aName;
         this.emptyHand();
+       // this.secondHand();
     }
 
     public void emptyHand(){

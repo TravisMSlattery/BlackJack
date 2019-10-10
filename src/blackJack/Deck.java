@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Deck {
 
-    private Card[] myCards;
+    public Card[] myCards;
     private int numCards;
 
     // no shuffle constructor
