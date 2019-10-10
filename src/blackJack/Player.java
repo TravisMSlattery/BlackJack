@@ -112,5 +112,9 @@ public class Player {
 
     public void dicBalance(){ this.balance = balance -100; }
 
+    public void  dIncBalance(){ this.balance = balance + 200; }
+
+    public void dDicBalance(){ this.balance = balance -200; }
+
     //public void tieBalance(int balance){ this.balance = balance;}
 }

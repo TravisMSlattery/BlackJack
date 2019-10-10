@@ -52,18 +52,22 @@ public class GamePlayer {
                         if (!meDone) {
 
                             System.out.println("You have: " + me.getHandSum() + "\n");
-                            System.out.print("Hit or Stay? (Enter H or S): ");
+                            System.out.print("Hit, Stay, Double or Split? (Enter H, S, D or Sp):");
                             ans = sc.next();
 
                             if (ans.compareToIgnoreCase("H") == 0) {
                                 meDone = !me.addCard(theDeck.dealNextCard());
                                 me.printHand(true);
 
-
+                            } else if (ans.compareToIgnoreCase("D") == 0) {
+                                meDone = !me.addCard(theDeck.dealNextCard());
+                                me.printHand(true);
+                                meDone = true;
                             } else {
                                 meDone = true;
                             }
                         }
+
                         if (!dealerDone) {
 
                             if (dealer.getHandSum() < 17) {
@@ -87,17 +91,30 @@ public class GamePlayer {
                     int mySum = me.getHandSum();
                     int dealerSum = dealer.getHandSum();
 
+                    while (ans.compareToIgnoreCase("D") == 1) {
+
+                        if (mySum > dealerSum && mySum <= 21 || dealerSum > 21) {
+                            me.dIncBalance();
+                            System.out.println("\nYou Win!" + "\nYour Balance is €" + me.getBalance());
+                        } else if (dealerSum > mySum && dealerSum <= 21 || mySum > 21) {
+                            me.dDicBalance();
+                            System.out.println("\nDealer Win!" + "\nYour Balance is €" + me.getBalance());
+                        } else {
+                            System.out.println("\nA TIE!" + "\nYour Balance is €" + me.getBalance());
+                        }
+
+                        me.emptyHand();
+                        dealer.emptyHand();
+                    }
 
                     if (mySum > dealerSum && mySum <= 21 || dealerSum > 21) {
                         me.incBalance();
                         System.out.println("\nYou Win!" + "\nYour Balance is €" + me.getBalance());
-                    } else if (dealerSum > mySum && dealerSum <= 21 || mySum> 21) {
+                    } else if (dealerSum > mySum && dealerSum <= 21 || mySum > 21) {
                         me.dicBalance();
                         System.out.println("\nDealer Win!" + "\nYour Balance is €" + me.getBalance());
                     } else {
                         System.out.println("\nA TIE!" + "\nYour Balance is €" + me.getBalance());
-
-
                     }
                     me.emptyHand();
                     dealer.emptyHand();
@@ -105,7 +122,7 @@ public class GamePlayer {
 
                 }
 
-                } else {
+            } else {
                 System.exit(0);
             }
         }
