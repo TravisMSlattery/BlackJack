@@ -1,10 +1,14 @@
 /**
  * This is how the cards are created
- *
+ * <p>
  * Travis Slattery
- */
+ **/
 package blackJack;
 
+
+import javax.swing.*;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Card {
 
@@ -15,23 +19,23 @@ public class Card {
 
         this.mySuit = aSuit;
 
-        if(aNumber >=1 && aNumber <=13) {
+        if (aNumber >= 1 && aNumber <= 13) {
             this.myNumber = aNumber;
-        }else{
-            System.err.println(aNumber + " is not a valid number");
-            System.exit(1);
+        } else {
+            showMessageDialog(null, aNumber + " is not a valid number", "Not Valid", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     // returns the number of the card
-    public int getNumber(){
+    public int getNumber() {
         return myNumber;
     }
 
-    public String toString(){
+    public String toString() {
 
         String numStr = "Error";
 
-        switch(this.myNumber){
+        switch (this.myNumber) {
 
             case 2:
                 numStr = "Two";

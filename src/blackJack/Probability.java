@@ -1,6 +1,6 @@
 package blackJack;
 
-public class Probability {
+public abstract class Probability {
 
 }
 

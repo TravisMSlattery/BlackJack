@@ -1,6 +1,9 @@
 package blackJack;
 
+import javax.swing.*;
 import java.util.Random;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Deck {
 
@@ -73,9 +76,11 @@ public class Deck {
 
         public void printDeck ( int numToPrint){
             for (int c = 0; c < numToPrint; c++) {
-                System.out.printf("%3d/%d %s\n", c + 1, this.numCards, this.myCards[c].toString());
+                showMessageDialog(null,"%3d/%d %s\n"+ (c + 1) + this.numCards + this.myCards[c].toString(),"", JOptionPane.ERROR_MESSAGE);
+                //System.out.printf("%3d/%d %s\n", c + 1, this.numCards, this.myCards[c].toString());
             }
-            System.out.printf("\t\t[%d other]\n", this.numCards - numToPrint);
+            showMessageDialog(null,"\t\t[%d other]\n" + (this.numCards - numToPrint),"", JOptionPane.ERROR_MESSAGE);
+            //System.out.printf("\t\t[%d other]\n", this.numCards - numToPrint);
         }
 
     }
