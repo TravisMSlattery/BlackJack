@@ -1,7 +1,7 @@
 /**
  * This uses enum to create each suit
  */
-package blackJack;
+package com.Slattery.Travis;
 
 public enum Suit {
     clubs,

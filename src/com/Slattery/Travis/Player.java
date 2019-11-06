@@ -1,17 +1,19 @@
-package blackJack;
+package com.Slattery.Travis;
 
+
+import javax.swing.*;
 
 import static javax.swing.JOptionPane.*;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-
-public class Player {
+public class Player<cardImage> {
 
     private String name;
+    private ImageIcon cardImage;
 
     private Card[] hand = new Card[10];
+    ImageIcon[] icons = new ImageIcon[5];
+   // String imageLink = "playingcards/" + "icon.png";
+    //cardImage = new ImageIcon(imageLink);
 
     public int numCards;
     public int balance;
@@ -112,7 +114,7 @@ public class Player {
         //showMessageDialog(null, this.name + "%s cards :\n", "", INFORMATION_MESSAGE);
         for (int c = 0; c < this.numCards; c++) {
             if (c == 0 && !showFirstCard) {
-                showMessageDialog(null, "    [HIDDEN]", "", INFORMATION_MESSAGE);
+                showMessageDialog(null,"hidden", "", INFORMATION_MESSAGE);
             } else {
                 showMessageDialog(null, " \n" + this.hand[c].toString(), "", INFORMATION_MESSAGE);
 
@@ -219,6 +221,7 @@ public class Player {
     public void setWinprecent(double winprecent) {
         this.winprecent = winprecent;
     }
+
 
 
 }

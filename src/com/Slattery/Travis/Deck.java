@@ -1,4 +1,4 @@
-package blackJack;
+package com.Slattery.Travis;
 
 import javax.swing.*;
 import java.util.Random;

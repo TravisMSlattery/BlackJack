@@ -3,21 +3,26 @@
  * <p>
  * Travis Slattery
  **/
-package blackJack;
+package com.Slattery.Travis;
 
 
 import javax.swing.*;
-
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Card {
 
     private Suit mySuit;
     private int myNumber;
+    private ImageIcon cardImage;
+
+
 
     public Card(Suit aSuit, int aNumber) {
 
         this.mySuit = aSuit;
+        this.myNumber = aNumber;
+        String imageLink = "playingcards/" + myNumber + mySuit + ".png";
+        cardImage = new ImageIcon(getClass().getResource(imageLink));
 
         if (aNumber >= 1 && aNumber <= 13) {
             this.myNumber = aNumber;
@@ -25,11 +30,17 @@ public class Card {
             showMessageDialog(null, aNumber + " is not a valid number", "Not Valid", JOptionPane.ERROR_MESSAGE);
         }
     }
+    public ImageIcon getCardImage()
+    {
+        return cardImage;
+    }
+
 
     // returns the number of the card
     public int getNumber() {
         return myNumber;
     }
+
 
     public String toString() {
 
