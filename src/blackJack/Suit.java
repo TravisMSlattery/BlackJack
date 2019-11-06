@@ -4,9 +4,9 @@
 package blackJack;
 
 public enum Suit {
-    Clubs,
-    Diamonds,
-    Spades,
-    Hearts,
+    clubs,
+    diamonds,
+    spades,
+    hearts,
 
 }

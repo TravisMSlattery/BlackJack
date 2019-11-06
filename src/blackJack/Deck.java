@@ -7,8 +7,10 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Deck {
 
+
     public Card[] myCards;
     private int numCards;
+    private int splitCount = 0;
 
     // no shuffle constructor
     public Deck() {
@@ -30,6 +32,7 @@ public class Deck {
                 // for each deck
                 for (int n = 1; n <= 13; n++) {
 
+                    //this.myCards[c] = new Card(Suit.values()[s], n,deck[(n-1)*(s+1)]);
                     this.myCards[c] = new Card(Suit.values()[s], n);
                     c++;
 

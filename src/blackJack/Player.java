@@ -15,22 +15,23 @@ public class Player {
 
     public int numCards;
     public int balance;
+    private int splitCount = 0;
 
 
-    private int hands;
-    private int wins;
-    private int lose;
-    private int draws;
+    private int handsPlayed;
+    private int handsWon;
+    private int handsLost;
+    private int handsDraws;
     private double winprecent;
 
     public Player(String aName) {
         balance = 1000;
         this.name = aName;
         this.emptyHand();
-        hands = 0;
-        wins = 0;
-        lose = 0;
-        draws = 0;
+        handsPlayed = 0;
+        handsWon = 0;
+        handsLost = 0;
+        handsDraws = 0;
 
         // this.secondHand();
     }
@@ -87,15 +88,33 @@ public class Player {
 
         return handSum;
     }
+    public int getSplitCount() {
+        return splitCount;
+    }
+
+    /**
+     * @return Whether or not the deck has been split
+     */
+    public boolean hasBeenSplit() {
+        return (getSplitCount() != 0);
+    }
+
+    /**
+     * @return Whether or not the deck can be split (only two cards, both same face, hasn't already been split twice
+     */
+    public boolean canSplit() {
+        return (numCards == 2 && this.hand[0].getNumber() == this.hand[1].getNumber() && getSplitCount() < 2);
+    }
+
 
 
     public void printHand(boolean showFirstCard) {
-        showMessageDialog(null, this.name + "%s cards :\n", "", INFORMATION_MESSAGE);
+        //showMessageDialog(null, this.name + "%s cards :\n", "", INFORMATION_MESSAGE);
         for (int c = 0; c < this.numCards; c++) {
             if (c == 0 && !showFirstCard) {
                 showMessageDialog(null, "    [HIDDEN]", "", INFORMATION_MESSAGE);
             } else {
-                showMessageDialog(null, "    %s\n" + this.hand[c].toString(), "", INFORMATION_MESSAGE);
+                showMessageDialog(null, " \n" + this.hand[c].toString(), "", INFORMATION_MESSAGE);
 
             }
         }
@@ -145,37 +164,53 @@ public class Player {
     }
 
 
-    public int getHands() {
-        return hands;
+
+    public void setHandsPlayed(int handsPlayed) {
+        this.handsPlayed = handsPlayed;
+    }
+    public void incHandsPlayed() {
+        this.handsPlayed = handsPlayed++;
     }
 
-    public void setHands() {
-        this.hands = hands + 1;
+    public int getHandsPlayed() {
+        return handsPlayed;
     }
 
-    public int getWins() {
-        return wins;
+    public void setHandsWon(int handsWon) {
+        this.handsWon = handsWon;
+    }
+    public void incHandsWon() {
+        this.handsWon = handsWon++;
     }
 
-    public void setWins() {
-        this.wins = wins + 1;
+    public int getHandsWon() {
+        return handsWon;
     }
 
-    public int getLose() {
-        return lose;
+    public void setHandsLost(int handsLost) {
+        this.handsLost = handsLost;
+    }
+    public void incHandsLost() {
+        this.handsLost = handsLost++; }
+
+    public int getHandsLost() {
+        return handsLost;
     }
 
-    public void setLose() {
-        this.lose = lose + 1;
+    public void setHandsDraws(int handsDraws) {
+        this.handsDraws = handsDraws;
+    }
+    public void incHandsDraws() {
+        this.handsDraws = handsDraws;
     }
 
-    public int getDraws() {
-        return draws;
+    public int getHandsDraws() {
+        return handsDraws;
     }
 
-    public void setDraws() {
-        this.draws = draws + 1;
-    }
+
+
+
 
     public double getWinprecent() {
         return winprecent;

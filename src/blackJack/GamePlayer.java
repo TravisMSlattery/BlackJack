@@ -12,14 +12,15 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 
 public class GamePlayer {
-
     Player dealer = new Player("Dealer");
     Player me = new Player("Travis");
-    GamePlayer myGame = new GamePlayer();
-
-    int myBalance = me.getBalance();
     Deck theDeck = new Deck(6, true);
     int choice;
+    int myBalance = me.getBalance();
+    int myHandsWon = me.getHandsWon();
+    int myHandsLost = me.getHandsLost();
+    int myHandsDraws = me.getHandsDraws();
+
 
     public GamePlayer() {
         JFrame jFrameWindow;
@@ -56,6 +57,8 @@ public class GamePlayer {
 
     public static void main(String[] args) {
 
+        GamePlayer myGame = new GamePlayer();
+
     } // end main
 
     class ButtonEventHandler implements ActionListener {
@@ -71,23 +74,15 @@ public class GamePlayer {
                     dealer.addCard(theDeck.dealNextCard());
                     me.addCard(theDeck.dealNextCard());
                     dealer.addCard(theDeck.dealNextCard());
-                    dealer.setHands();
-                    me.setHands();
-                    Object hitButton = null;
-                    Object dblButton = null;
-                    Object stayButton = null;
-                    Object splitButton = null;
-
 
                     //print hands
-                    showMessageDialog(null, "Cards are dealt\n", "", INFORMATION_MESSAGE);
+                   // showMessageDialog(null, "Cards are dealt\n", "", INFORMATION_MESSAGE);
                     me.printHand(true);
                     dealer.printHand(false);
                     showMessageDialog(null, "\n", "", INFORMATION_MESSAGE);
                     if (me.getHandSum() == 21 && dealer.getHandSum() != 21) {
                         me.incBalance();
-                        me.setWins();
-                        dealer.setDraws();
+                        me.incHandsWon();
                         showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
                                 , "You Win!", INFORMATION_MESSAGE);
                         boolean meDone = true;
@@ -99,10 +94,13 @@ public class GamePlayer {
 
 
                         while (!meDone || !dealerDone) {
+                            Object hitButton = null;
+                            Object dblButton = null;
+                            Object stayButton = null;
+                            Object splitButton = null;
 
                             if (!meDone) {
                                 showMessageDialog(null, "\nYou have: " + me.getHandSum(), "Game Play", INFORMATION_MESSAGE);
-                                showInputDialog("Hit, Stay, Double or Split? (Enter H, S, D or Sp)", INFORMATION_MESSAGE);
 
                                 if (e.getSource() == hitButton) {
                                     meDone = !me.addCard(theDeck.dealNextCard());
@@ -138,25 +136,29 @@ public class GamePlayer {
 
                         int mySum = me.getHandSum();
                         int dealerSum = dealer.getHandSum();
+                        Object dblButton = null;
 
                         while (e.getSource() == dblButton) {
 
                             if (mySum > dealerSum && mySum <= 21 || dealerSum > 21) {
                                 me.dIncBalance();
-                                me.setWins();
-                                dealer.setLose();
+                                me.incHandsWon();
+                                dealer.incHandsLost();
                                 showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
+                                                + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                         , "You Win!", INFORMATION_MESSAGE);
                             } else if (dealerSum > mySum && dealerSum <= 21 || mySum > 21) {
                                 me.dDicBalance();
-                                me.setLose();
-                                dealer.setLose();
+                                me.incHandsLost();
+                                dealer.incHandsWon();
                                 showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nYou Lose!" + "\nYour Balance is €" + me.getBalance()
+                                                + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                         , "You Lose!", INFORMATION_MESSAGE);
                             } else {
-                                me.setDraws();
-                                dealer.setDraws();
+                                me.incHandsDraws();
+                                dealer.incHandsDraws();
                                 showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nIt's a Tie!" + "\nYour Balance is €" + me.getBalance()
+                                        + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                         , "Tie!", INFORMATION_MESSAGE);
                             }
 
@@ -166,20 +168,23 @@ public class GamePlayer {
 
                         if (mySum > dealerSum && mySum <= 21 || dealerSum > 21) {
                             me.incBalance();
-                            me.setWins();
-                            dealer.setLose();
+                            me.incHandsWon();
+                            dealer.incHandsLost();
                             showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
+                                            + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                     , "You Win!", INFORMATION_MESSAGE);
                         } else if (dealerSum > mySum && dealerSum <= 21 || mySum > 21) {
                             me.dicBalance();
-                            me.setLose();
-                            dealer.setWins();
+                            me.incHandsLost();
+                            dealer.incHandsWon();
                             showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nYou Lose!" + "\nYour Balance is €" + me.getBalance()
+                                            + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                     , "You Lose!", INFORMATION_MESSAGE);
                         } else {
-                            me.setDraws();
-                            dealer.setDraws();
+                            me.incHandsDraws();
+                            dealer.incHandsDraws();
                             showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nIt's a Tie!" + "\nYour Balance is €" + me.getBalance()
+                                            + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                     , "Tie!", INFORMATION_MESSAGE);
                         }
                         me.emptyHand();
