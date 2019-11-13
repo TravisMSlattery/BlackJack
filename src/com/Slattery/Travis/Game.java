@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import static javax.swing.JOptionPane.*;
 
 
-public class GamePlayer extends JFrame {
+public class Game extends BlackJackGUI {
     Player dealer = new Player("Dealer");
     Player me = new Player("Travis");
     Deck theDeck = new Deck(6, true);
@@ -17,48 +17,20 @@ public class GamePlayer extends JFrame {
     int myHandsWon = me.getHandsWon();
     int myHandsLost = me.getHandsLost();
     int myHandsDraws = me.getHandsDraws();
-    JTextArea dealerText, playerText, statsText;
 
 
-    public GamePlayer() {
-        JFrame jFrameWindow;
-        jFrameWindow = new JFrame("M.T Pockets Casino");
-        JFrame frame = new JFrame("Border Layout");
-        jFrameWindow.setSize(720, 720);
-        jFrameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel dealerLabel = new JLabel("Dealer");
-        jFrameWindow.add(dealerLabel);
-        JLabel playerLabel = new JLabel("Player");
-        jFrameWindow.add(playerLabel);
-        JButton hitButton = new JButton("Hit!");
-        JButton stayButton = new JButton("Stick!");
-        JButton dblButton = new JButton("Double!");
-        JButton splitButton = new JButton("Split!");
-        jFrameWindow.add(hitButton,BorderLayout.SOUTH);
-        jFrameWindow.add(stayButton, BorderLayout.SOUTH);
-        jFrameWindow.add(dblButton, BorderLayout.SOUTH);
-        jFrameWindow.add(splitButton, BorderLayout.SOUTH);
-        ButtonEventHandler hitHandler = new ButtonEventHandler();
-        hitButton.addActionListener(hitHandler);
-        ButtonEventHandler stayHandler = new ButtonEventHandler();
-        stayButton.addActionListener(stayHandler);
-        ButtonEventHandler dblHandler = new ButtonEventHandler();
-        dblButton.addActionListener(dblHandler);
-        ButtonEventHandler splitHandler = new ButtonEventHandler();
-        splitButton.addActionListener(splitHandler);
-
-        jFrameWindow.setVisible(true);
-
-    }//end gui constructor
 
 
     public static void main(String[] args) {
-
-        GamePlayer myGame = new GamePlayer();
+        BlackJackGUI game = new BlackJackGUI();
     } // end main
 
-    class ButtonEventHandler implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
+
+    protected void actionPerformed() {
+            actionPerformed();
+        }
+
+    protected void actionPerformed(ActionEvent e) {
 
             while (me.getBalance() != 0) {
 
@@ -190,6 +162,5 @@ public class GamePlayer extends JFrame {
 
             }
         }
-    }// button handler
 }
 
