@@ -12,7 +12,7 @@ public class Player<cardImage> {
 
     private Card[] hand = new Card[10];
     ImageIcon[] icons = new ImageIcon[5];
-   // String imageLink = "playingcards/" + "icon.png";
+   //String imageLink = "playingcards/" + "icon.png";
     //cardImage = new ImageIcon(imageLink);
 
     public int numCards;
@@ -49,10 +49,8 @@ public class Player<cardImage> {
 
     public boolean addCard(Card aCard) {
 
-        if (this.numCards == 10) {
-            showMessageDialog(null, "%s' hand already has 10 cards cannot add another card\n" + this.name, "", INFORMATION_MESSAGE);
-
-            System.exit(1);
+        if (this.numCards == 5) {
+            System.out.print( "%s' hand already has 5 cards cannot add another card\n" + this.name);
         }
 
         this.hand[this.numCards] = aCard;
@@ -111,12 +109,12 @@ public class Player<cardImage> {
 
 
     public void printHand(boolean showFirstCard) {
-        //showMessageDialog(null, this.name + "%s cards :\n", "", INFORMATION_MESSAGE);
+        //System.out.print( this.name + "%s cards :\n");
         for (int c = 0; c < this.numCards; c++) {
             if (c == 0 && !showFirstCard) {
-                showMessageDialog(null,"hidden", "", INFORMATION_MESSAGE);
+                System.out.print("hidden");
             } else {
-                showMessageDialog(null, " \n" + this.hand[c].toString(), "", INFORMATION_MESSAGE);
+                System.out.print(" \n" + this.hand[c].toString());
 
             }
         }

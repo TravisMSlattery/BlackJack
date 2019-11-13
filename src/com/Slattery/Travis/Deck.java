@@ -3,13 +3,13 @@ package com.Slattery.Travis;
 import javax.swing.*;
 import java.util.Random;
 
-import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Deck {
 
 
     public Card[] myCards;
-    private int numCards;
+    public int numCards;
+    public ImageIcon cardImage;
     private int splitCount = 0;
 
     // no shuffle constructor
@@ -34,6 +34,7 @@ public class Deck {
 
                     //this.myCards[c] = new Card(Suit.values()[s], n,deck[(n-1)*(s+1)]);
                     this.myCards[c] = new Card(Suit.values()[s], n);
+                    this.cardImage = cardImage;
                     c++;
 
                 }
@@ -79,11 +80,11 @@ public class Deck {
 
         public void printDeck ( int numToPrint){
             for (int c = 0; c < numToPrint; c++) {
-                showMessageDialog(null,"%3d/%d %s\n"+ (c + 1) + this.numCards + this.myCards[c].toString(),"", JOptionPane.ERROR_MESSAGE);
-                //System.out.printf("%3d/%d %s\n", c + 1, this.numCards, this.myCards[c].toString());
+               // showMessageDialog(null,"%3d/%d %s\n"+ (c + 1) + this.numCards + this.myCards[c].toString(),"", JOptionPane.ERROR_MESSAGE);
+                System.out.printf("%3d/%d %s\n", c + 1, this.numCards, this.myCards[c].toString());
             }
-            showMessageDialog(null,"\t\t[%d other]\n" + (this.numCards - numToPrint),"", JOptionPane.ERROR_MESSAGE);
-            //System.out.printf("\t\t[%d other]\n", this.numCards - numToPrint);
+           // showMessageDialog(null,"\t\t[%d other]\n" + (this.numCards - numToPrint),"", JOptionPane.ERROR_MESSAGE);
+            System.out.printf("\t\t[%d other]\n", this.numCards - numToPrint);
         }
 
     }

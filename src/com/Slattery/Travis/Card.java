@@ -7,13 +7,12 @@ package com.Slattery.Travis;
 
 
 import javax.swing.*;
-import static javax.swing.JOptionPane.showMessageDialog;
 
 public class Card {
 
     private Suit mySuit;
     private int myNumber;
-    private ImageIcon cardImage;
+    public ImageIcon cardImage;
 
 
 
@@ -21,15 +20,17 @@ public class Card {
 
         this.mySuit = aSuit;
         this.myNumber = aNumber;
-        String imageLink = "playingcards/" + myNumber + mySuit + ".png";
+        String imageLink = "/playingcards/" + myNumber + mySuit + ".jpg";
         cardImage = new ImageIcon(getClass().getResource(imageLink));
 
         if (aNumber >= 1 && aNumber <= 13) {
             this.myNumber = aNumber;
         } else {
-            showMessageDialog(null, aNumber + " is not a valid number", "Not Valid", JOptionPane.ERROR_MESSAGE);
+            System.out.print(aNumber + " is not a valid number");
         }
     }
+
+
     public ImageIcon getCardImage()
     {
         return cardImage;

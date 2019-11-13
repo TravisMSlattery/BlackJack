@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 
 import static javax.swing.JOptionPane.*;
 
-
 public class Game extends BlackJackGUI {
     Player dealer = new Player("Dealer");
     Player me = new Player("Travis");
@@ -23,14 +22,17 @@ public class Game extends BlackJackGUI {
 
     public static void main(String[] args) {
         BlackJackGUI game = new BlackJackGUI();
-    } // end main
+    }// end main
+
+    //public void run(){
+        //while(true){
+          //  BlackJackGUI.getFrames();
+    //    }
+ //   }
 
 
-    protected void actionPerformed() {
-            actionPerformed();
-        }
 
-    protected void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {
 
             while (me.getBalance() != 0) {
 
@@ -42,15 +44,14 @@ public class Game extends BlackJackGUI {
                 dealer.addCard(theDeck.dealNextCard());
 
                 //print hands
-                // showMessageDialog(null, "Cards are dealt\n", "", INFORMATION_MESSAGE);
+                System.out.print( "Cards are dealt\n");
                 me.printHand(true);
                 dealer.printHand(false);
-                showMessageDialog(null, "\n", "", INFORMATION_MESSAGE);
+                System.out.print( "\n");
                 if (me.getHandSum() == 21 && dealer.getHandSum() != 21) {
                     me.incBalance();
                     me.incHandsWon();
-                    showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
-                            , "You Win!", INFORMATION_MESSAGE);
+                    System.out.print( "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance());
                     boolean meDone = true;
                     me.emptyHand();
                     dealer.emptyHand();
@@ -66,7 +67,7 @@ public class Game extends BlackJackGUI {
                         Object splitButton = null;
 
                         if (!meDone) {
-                            showMessageDialog(null, "\nYou have: " + me.getHandSum(), "Game Play", INFORMATION_MESSAGE);
+                            System.out.print( "\nYou have: " + me.getHandSum());
 
                             if (e.getSource() == hitButton) {
                                 meDone = !me.addCard(theDeck.dealNextCard());
@@ -83,13 +84,13 @@ public class Game extends BlackJackGUI {
 
                         if (!dealerDone) {
 
-                            if (dealer.getHandSum() < 17) {
-                                showMessageDialog(null, "Dealer Hits", "Dealer Hits!", INFORMATION_MESSAGE);
+                            if (dealer.getHandSum() < 17 ) {
+                                System.out.print( "Dealer Hits");
                                 dealerDone = !dealer.addCard(theDeck.dealNextCard());
                                 dealer.printHand(false);
 
                             } else {
-                                showMessageDialog(null, "Dealer Sticks", "Dealer Sticks!", INFORMATION_MESSAGE);
+                                System.out.print( "Dealer Sticks");
                                 dealer.printHand(true);
                                 dealerDone = true;
                             }
@@ -106,26 +107,26 @@ public class Game extends BlackJackGUI {
 
                     while (e.getSource() == dblButton) {
 
-                        if (mySum > dealerSum && mySum <= 21 || dealerSum > 21) {
+                        if (mySum > dealerSum && mySum <= 21 || dealerSum > 21 ) {
                             me.dIncBalance();
                             me.incHandsWon();
                             dealer.incHandsLost();
-                            showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
+                            System.out.print( "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
                                             + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
-                                    , "You Win!", INFORMATION_MESSAGE);
+                                    );
                         } else if (dealerSum > mySum && dealerSum <= 21 || mySum > 21) {
                             me.dDicBalance();
                             me.incHandsLost();
                             dealer.incHandsWon();
-                            showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nYou Lose!" + "\nYour Balance is €" + me.getBalance()
+                            System.out.print( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nYou Lose!" + "\nYour Balance is €" + me.getBalance()
                                             + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
-                                    , "You Lose!", INFORMATION_MESSAGE);
+                                    );
                         } else {
                             me.incHandsDraws();
                             dealer.incHandsDraws();
-                            showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nIt's a Tie!" + "\nYour Balance is €" + me.getBalance()
+                            System.out.print( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nIt's a Tie!" + "\nYour Balance is €" + me.getBalance()
                                             + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
-                                    , "Tie!", INFORMATION_MESSAGE);
+                                    );
                         }
 
                         me.emptyHand();
@@ -136,22 +137,22 @@ public class Game extends BlackJackGUI {
                         me.incBalance();
                         me.incHandsWon();
                         dealer.incHandsLost();
-                        showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
+                        System.out.print( "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
                                         + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
-                                , "You Win!", INFORMATION_MESSAGE);
+                                );
                     } else if (dealerSum > mySum && dealerSum <= 21 || mySum > 21) {
                         me.dicBalance();
                         me.incHandsLost();
                         dealer.incHandsWon();
-                        showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nYou Lose!" + "\nYour Balance is €" + me.getBalance()
+                        System.out.print( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nYou Lose!" + "\nYour Balance is €" + me.getBalance()
                                         + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
-                                , "You Lose!", INFORMATION_MESSAGE);
+                                );
                     } else {
                         me.incHandsDraws();
                         dealer.incHandsDraws();
-                        showMessageDialog(null, "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nIt's a Tie!" + "\nYour Balance is €" + me.getBalance()
+                        System.out.print( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nIt's a Tie!" + "\nYour Balance is €" + me.getBalance()
                                         + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
-                                , "Tie!", INFORMATION_MESSAGE);
+                                );
                     }
                     me.emptyHand();
                     dealer.emptyHand();
