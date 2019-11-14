@@ -16,12 +16,12 @@ public class Card {
 
 
 
+
     public Card(Suit aSuit, int aNumber) {
 
         this.mySuit = aSuit;
         this.myNumber = aNumber;
-        String imageLink = "/playingcards/" + myNumber + mySuit + ".jpg";
-        cardImage = new ImageIcon(getClass().getResource(imageLink));
+
 
         if (aNumber >= 1 && aNumber <= 13) {
             this.myNumber = aNumber;
@@ -33,6 +33,10 @@ public class Card {
 
     public ImageIcon getCardImage()
     {
+        String imageLink = "/playingcards/" + myNumber + mySuit + ".jpg";
+            cardImage = new ImageIcon((getClass().getResource(imageLink)));
+
+            // testing by displaying 7,8 and 9 cards
         return cardImage;
     }
 

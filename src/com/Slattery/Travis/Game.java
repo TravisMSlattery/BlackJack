@@ -44,14 +44,14 @@ public class Game extends BlackJackGUI {
                 dealer.addCard(theDeck.dealNextCard());
 
                 //print hands
-                System.out.print( "Cards are dealt\n");
+                //System.out.print( "Cards are dealt\n");
                 me.printHand(true);
                 dealer.printHand(false);
-                System.out.print( "\n");
+                //System.out.print( "\n");
                 if (me.getHandSum() == 21 && dealer.getHandSum() != 21) {
                     me.incBalance();
                     me.incHandsWon();
-                    System.out.print( "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance());
+                   JTextArea info =  new JTextArea( "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance());
                     boolean meDone = true;
                     me.emptyHand();
                     dealer.emptyHand();
@@ -64,10 +64,10 @@ public class Game extends BlackJackGUI {
                         Object hitButton = null;
                         Object dblButton = null;
                         Object stayButton = null;
-                        Object splitButton = null;
+                        //Object splitButton = null;
 
                         if (!meDone) {
-                            System.out.print( "\nYou have: " + me.getHandSum());
+                            new JTextArea( "\nYou have: " + me.getHandSum());
 
                             if (e.getSource() == hitButton) {
                                 meDone = !me.addCard(theDeck.dealNextCard());
@@ -85,12 +85,12 @@ public class Game extends BlackJackGUI {
                         if (!dealerDone) {
 
                             if (dealer.getHandSum() < 17 ) {
-                                System.out.print( "Dealer Hits");
+                                new JTextArea( "Dealer Hits");
                                 dealerDone = !dealer.addCard(theDeck.dealNextCard());
                                 dealer.printHand(false);
 
                             } else {
-                                System.out.print( "Dealer Sticks");
+                                new JTextArea( "Dealer Sticks");
                                 dealer.printHand(true);
                                 dealerDone = true;
                             }
@@ -111,20 +111,20 @@ public class Game extends BlackJackGUI {
                             me.dIncBalance();
                             me.incHandsWon();
                             dealer.incHandsLost();
-                            System.out.print( "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
+                            new JTextArea( "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
                                             + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                     );
                         } else if (dealerSum > mySum && dealerSum <= 21 || mySum > 21) {
                             me.dDicBalance();
                             me.incHandsLost();
                             dealer.incHandsWon();
-                            System.out.print( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nYou Lose!" + "\nYour Balance is €" + me.getBalance()
+                            new JTextArea( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nYou Lose!" + "\nYour Balance is €" + me.getBalance()
                                             + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                     );
                         } else {
                             me.incHandsDraws();
                             dealer.incHandsDraws();
-                            System.out.print( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nIt's a Tie!" + "\nYour Balance is €" + me.getBalance()
+                            new JTextArea( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nIt's a Tie!" + "\nYour Balance is €" + me.getBalance()
                                             + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                     );
                         }
@@ -137,20 +137,20 @@ public class Game extends BlackJackGUI {
                         me.incBalance();
                         me.incHandsWon();
                         dealer.incHandsLost();
-                        System.out.print( "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
+                        new JTextArea( "\nYou have: " + me.getHandSum() + "\nYou Win!" + "\nYour Balance is €" + me.getBalance()
                                         + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                 );
                     } else if (dealerSum > mySum && dealerSum <= 21 || mySum > 21) {
                         me.dicBalance();
                         me.incHandsLost();
                         dealer.incHandsWon();
-                        System.out.print( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nYou Lose!" + "\nYour Balance is €" + me.getBalance()
+                        new JTextArea( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nYou Lose!" + "\nYour Balance is €" + me.getBalance()
                                         + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                 );
                     } else {
                         me.incHandsDraws();
                         dealer.incHandsDraws();
-                        System.out.print( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nIt's a Tie!" + "\nYour Balance is €" + me.getBalance()
+                        new JTextArea( "\nYou have: " + me.getHandSum() + "\nDealer has: " + dealer.getHandSum() + "\nIt's a Tie!" + "\nYour Balance is €" + me.getBalance()
                                         + "\nYour hands played is " + me.getHandsPlayed() + "\nYour hands won is " + me.getHandsWon() + "\nYour hands lost is " + me.getHandsLost() + "\nYour hands tied is " + me.getHandsDraws()
                                 );
                     }
