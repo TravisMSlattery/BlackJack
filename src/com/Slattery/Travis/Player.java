@@ -1,12 +1,8 @@
 package com.Slattery.Travis;
 
-
 import javax.swing.*;
 
-import static javax.swing.JOptionPane.*;
-
-public class Player<cardImage> {
-
+public class Player extends BlackJackGUI {
     private String name;
     private ImageIcon cardImage;
 
@@ -50,7 +46,7 @@ public class Player<cardImage> {
     public boolean addCard(Card aCard) {
 
         if (this.numCards == 5) {
-            System.out.print( "%s' hand already has 5 cards cannot add another card\n" + this.name);
+            gameInfo.setText( "%s' hand already has 5 cards cannot add another card\n" + this.name);
         }
 
         this.hand[this.numCards] = aCard;
@@ -108,13 +104,24 @@ public class Player<cardImage> {
 
 
 
-    public void printHand(boolean showFirstCard) {
+    public void printHandD(boolean showFirstCard) {
         //System.out.print( this.name + "%s cards :\n");
         for (int c = 0; c < this.numCards; c++) {
             if (c == 0 && !showFirstCard) {
-                System.out.print("hidden");
+                dslot1.setText("hidden");
             } else {
-                System.out.print(" \n" + this.hand[c].toString());
+                dslot2.setText(" \n" + this.hand[c].toString());
+
+            }
+        }
+    }
+    public void printHandP(boolean showFirstCard) {
+        //System.out.print( this.name + "%s cards :\n");
+        for (int c = 0; c < this.numCards; c++) {
+            if (c == 0 && !showFirstCard) {
+                pslot1.setText("hidden");
+            } else {
+                pslot2.setText(" \n" + this.hand[c].toString());
 
             }
         }
