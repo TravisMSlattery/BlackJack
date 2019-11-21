@@ -76,39 +76,16 @@ public class BlackJackGUI {
         frame.getContentPane().add(startBalance);
     }
 
-
-    public class Board extends JPanel {
-
-        public void paintComponent(Graphics g) {
-            g.setColor(colorBackground);
-            g.fillRect(0, 0, aW, aH);
-
-            //temp grid
-            g.setColor(Color.black);
-            g.drawRect(gridX, gridY, gridW, gridH);
-            // temp game info box
-            g.setColor(Color.black);
-            g.drawRect(gameInfoX, gameInfoY, gameInfoW, gameInfoH);
-
-            // temp info dialog
-            g.drawRect(infoX, infoY, infoW, infoH);
-
-
-            //}
-            //for(int i = 0; i < 5; i++){
-
-
-            //  g.drawRect(gridX+i*cardTW + cardSpacing,gridY+cardSpacing,cardAW,cardAH);
-            //  g.drawRect(gridX+i*cardTW + cardSpacing,gridY+cardSpacing+cardTH,cardAW,cardAH);
-            // }
-
-
+    public static boolean isValidAmount(String s) { // This is to assure that the values entered for the initial balance and the player's bet are natural numbers.
+        try {
+            if (Integer.parseInt(s) > 0) // Ensure amount entered is > 0
+                return true;
+            else
+                return false;
+        } catch (NumberFormatException e) { // If not valid integer
+            return false;
         }
-
-
     }
-}
-
 }
 
 
