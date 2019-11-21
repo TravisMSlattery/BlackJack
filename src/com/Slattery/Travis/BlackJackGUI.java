@@ -86,6 +86,19 @@ public class BlackJackGUI {
             return false;
         }
     }
+
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+
+        // Start of program
+
+        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+
+
+        initGuiObjects(); // Displays the initial GUI objects to enter an initial balance and start/stop a game
+
+        frame.setVisible(true);
+
+    }
 }
 
 
