@@ -87,6 +87,43 @@ public class BlackJackGUI {
         }
     }
 
+
+    // This function runs when the program starts or when the game ends. It displays the initial GUI objects to enter an initial balance and start/stop a game
+    public static void initGuiObjects() {
+        startButton = new JButton("New Game"); // New game button
+        startButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        startButton.setBounds(20, 610, 99, 50);
+        frame.getContentPane().add(startButton);
+
+        endButton = new JButton("End Game"); // End game button, this removes all GUI objects and starts from scratch
+        endButton.setEnabled(false);
+        endButton.setBounds(121, 610, 99, 50);
+        endButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.getContentPane().removeAll(); // Remove all objects from screen
+                frame.repaint(); // Repaint to show update
+                initGuiObjects(); // Restart the game logic and display the New Game menu
+            }
+        });
+        frame.getContentPane().add(endButton);
+
+        balanceField = new JTextField(); // Text field to store initial balance
+        balanceField.setText("1000");
+        balanceField.setBounds(131, 580, 89, 28);
+        frame.getContentPane().add(balanceField);
+        balanceField.setColumns(10);
+
+        startBalance = new JLabel("Initial Balance:"); // Initial balance label
+        startBalance.setFont(new Font("Arial", Font.BOLD, 13));
+        startBalance.setForeground(Color.WHITE);
+        startBalance.setBounds(30, 586, 100, 16);
+        frame.getContentPane().add(startBalance);
+    }
+
+
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 
         // Start of program
