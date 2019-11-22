@@ -12,6 +12,8 @@ public class BlackJackGUI {
     private static CardArray dealerCardPanel = null, playerCardPanel = null; // The deck of cards, the dealer's cards, the player's cards, the panels for the player's and dealer's cards
     private static Card dealerHiddenCard;
 
+    private static double balance = 0.0; // Setting the initial amounts for the Balance,
+    private static int betAmount = 0, roundCount = 0; // the amount the player bets and the number of rounds.
 
     // Creating the GUI elements in the window builder
     private static JTextField balanceField;
@@ -46,6 +48,7 @@ public class BlackJackGUI {
         startButton = new JButton("New Game"); // New game button
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                //newGame(); // Start game
             }
         });
         startButton.setBounds(20, 610, 99, 50);
@@ -172,6 +175,37 @@ public class BlackJackGUI {
         dealButton.requestFocus();
 
         frame.repaint();
+
+    }
+
+    public static void deal() { // Runs when the Deal button is pressed. Draws two player and dealer cards (only displaying one of the dealer's cards) and asks for an action from the player, or if there's an immediate outcome (eg. blackjack straight away), it takes action
+
+        if (shuffleInfo != null) // (Every 30 rounds the deck is reshuffled and this label is displayed. Hide it when a new round is started
+            frame.getContentPane().remove(shuffleInfo);
+
+        // Initialise dealer/player card arrays
+        dealerCards = new Deck();
+        playerCards = new Deck();
+
+        if (isValidAmount(betAmountField.getText()) == true) { // Parse bet amount given
+            betAmount = Integer.parseInt(betAmountField.getText());
+        } else {
+            gameInfo.setText("Error: Bet must be a whole number!"); // Give an error
+            betAmountField.requestFocus();
+            return;
+        }
+
+        if (betAmount > balance) { // If bet is higher than balance
+            gameInfo.setText("Error: Bet higher than balance!"); // Give an error
+            betAmountField.requestFocus();
+            return;
+        }
+        balance -= betAmount; // Subtract bet from balance
+
+        balanceLabel.setText(String.format("€%.2f", balance));
+
+        betAmountField.setEnabled(false);
+        dealButton.setEnabled(false);
 
     }
 
