@@ -122,6 +122,58 @@ public class BlackJackGUI {
         startBalance.setBounds(30, 586, 100, 16);
         frame.getContentPane().add(startBalance);
     }
+    public static void showBetGui() { // This runs when a new game is started. It initializes and displays the current balance label, deal amount and deal button
+
+        endButton.setEnabled(true);
+
+        currentBalance = new JLabel("Current Balance:"); // Current balance label
+        currentBalance.setHorizontalAlignment(SwingConstants.CENTER);
+        currentBalance.setFont(new Font("Arial", Font.BOLD, 16));
+        currentBalance.setForeground(Color.WHITE);
+        currentBalance.setBounds(315, 578, 272, 22);
+        frame.getContentPane().add(currentBalance);
+
+        balanceLabel = new JLabel(); // Balance label, shows current balance
+        balanceLabel.setText(String.format("€%.2f", balance));
+        balanceLabel.setForeground(Color.ORANGE);
+        balanceLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        balanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        balanceLabel.setBounds(315, 600, 272, 50);
+        frame.getContentPane().add(balanceLabel);
+
+        gameInfo = new JLabel("Please enter a bet and click Deal"); // Deal info label
+        gameInfo.setBackground(Color.ORANGE);
+        gameInfo.setOpaque(false);
+        gameInfo.setForeground(Color.ORANGE);
+        gameInfo.setFont(new Font("Arial", Font.BOLD, 16));
+        gameInfo.setHorizontalAlignment(SwingConstants.CENTER);
+        gameInfo.setBounds(290, 482, 320, 28);
+        frame.getContentPane().add(gameInfo);
+
+        betAmountField = new JTextField(); // Bet amount text field
+        betAmountField.setText("");
+        betAmountField.setBounds(790, 580, 89, 28);
+        frame.getContentPane().add(betAmountField);
+
+        enterBetLabel = new JLabel("Enter Bet:"); // Bet amount info label
+        enterBetLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        enterBetLabel.setForeground(Color.WHITE);
+        enterBetLabel.setBounds(689, 586, 100, 16);
+        frame.getContentPane().add(enterBetLabel);
+
+        dealButton = new JButton("Deal"); // Deal button
+        dealButton.setBounds(679, 610, 200, 50);
+        dealButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deal(); // When clicked, deal
+            }
+        });
+        frame.getContentPane().add(dealButton);
+        dealButton.requestFocus();
+
+        frame.repaint();
+
+    }
 
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
