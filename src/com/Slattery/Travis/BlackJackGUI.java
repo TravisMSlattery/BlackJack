@@ -207,7 +207,295 @@ public class BlackJackGUI {
         betAmountField.setEnabled(false);
         dealButton.setEnabled(false);
 
+        gameInfo.setText("Please Hit, Stand or Double"); // Next instruction
+
+        dLabel = new JLabel("Dealer"); // Dealer label
+        dLabel.setForeground(Color.WHITE);
+        dLabel.setFont(new Font("Arial Black", Font.BOLD, 20));
+        dLabel.setBounds(415, 10, 82, 28);
+        frame.getContentPane().add(dLabel);
+
+        pLabel = new JLabel("Player"); // Player label
+        pLabel.setForeground(Color.WHITE);
+        pLabel.setFont(new Font("Arial Black", Font.BOLD, 20));
+        pLabel.setBounds(415, 320, 82, 28);
+        frame.getContentPane().add(pLabel);
+
+        hitButton = new JButton("Hit"); // Hit button
+        hitButton.setBounds(200, 515, 140, 35);
+        hitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                hit(); // When pressed, hit
+            }
+        });
+        frame.getContentPane().add(hitButton);
+        hitButton.requestFocus();
+
+        stayButton = new JButton("Stand"); // Stand button
+        stayButton.setBounds(380, 515, 140, 35);
+        stayButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                stand(); // When pressed, stand
+            }
+        });
+        frame.getContentPane().add(stayButton);
+
+
+        dblButton = new JButton("Double"); // Stand button
+        dblButton.setBounds(560, 515, 140, 35);
+        dblButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dblBet(); // When pressed, stand
+            }
+        });
+        frame.getContentPane().add(dblButton);
+
+        continueButton = new JButton("Continue"); // When the final outcome is reached, press this to accept and continue the game
+        continueButton.setEnabled(false);
+        continueButton.setVisible(false);
+        continueButton.setBounds(290, 444, 320, 35);
+        continueButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                acceptOutcome(); // Accept outcome
+            }
+        });
+        frame.getContentPane().add(continueButton);
+
+        amountBet = new JLabel(); // Show bet amount
+        amountBet.setText("€" + betAmount);
+        amountBet.setHorizontalAlignment(SwingConstants.CENTER);
+        amountBet.setForeground(Color.ORANGE);
+        amountBet.setFont(new Font("Arial", Font.BOLD, 40));
+        amountBet.setBounds(679, 458, 200, 50);
+        frame.getContentPane().add(amountBet);
+
+        lblBetAmountDesc = new JLabel("Bet Amount:"); // Bet amount info label
+        lblBetAmountDesc.setHorizontalAlignment(SwingConstants.CENTER);
+        lblBetAmountDesc.setForeground(Color.WHITE);
+        lblBetAmountDesc.setFont(new Font("Arial", Font.BOLD, 16));
+        lblBetAmountDesc.setBounds(689, 435, 190, 22);
+        frame.getContentPane().add(lblBetAmountDesc);
+
+        frame.repaint(); // Redraw frame to show changes
+
+        dealerHiddenCard = deck.takeCard(); // Take a card from top of deck for dealer but hide it
+        dealerCards.myCards.add(new Card("", "", 0)); // Add turned over card to dealer's cards
+        dealerCards.myCards.add(deck.takeCard()); // Add card from top of deck to dealer's cards
+
+        // Add two cards from top of deck to player's cards
+        playerCards.myCards.add(deck.takeCard());
+        playerCards.myCards.add(deck.takeCard());
+
+        updateCardPanels(); // Display the two card panels
+
+        simpleOutcomes(); // Check for any automatic outcomes (i.e. immediate blackjack)
+
     }
+
+    public static void hit() { // Add another card to player cards, show the new card and check for any outcomes
+
+        playerCards.myCards.add(deck.takeCard());
+        updateCardPanels();
+        simpleOutcomes();
+
+    }
+    public static void dblBet() { // Add another card to player cards, show the new card and check for any outcomes
+        betAmount = betAmount*2;
+        playerCards.myCards.add(deck.takeCard());
+        updateCardPanels();
+
+        int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
+        if (simpleOutcomes()) // Check for any normal outcomes. If so, we don't need to do anything here so return.
+            return;
+
+        if (playerScore > 21 && playerCards.getNumAces() > 0) // If player has at least one ace and would otherwise lose (>21), subtract 10
+            playerScore -= 10;
+
+        dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
+
+        int dealerScore = dealerCards.getTotalValue(); // Get dealer score as total of cards he has
+
+        while (dealerScore < 17) { // If dealer's hand is < 17, he needs to get more cards until it's > 17
+            dealerCards.myCards.add(deck.takeCard()); // Take a card from top of deck and add
+            dealerScore = dealerCards.getTotalValue();
+            if (dealerScore > 21 && dealerCards.getNumAces() > 0) // If there's an ace and total > 21, subtract 10
+                dealerScore -= 10;
+        }
+        updateCardPanels(); // Display new dealer's cards
+
+        // Determine final outcomes, give profits if so and display outcomes
+        if (playerScore > dealerScore) { // Player wins
+            gameInfo.setText("Player wins! Profit: €" + betAmount);
+            balance += betAmount * 2;
+            balanceLabel.setText(String.format("€%.2f", balance));
+        } else if (dealerScore == 21) { // Dealer blackjack
+            gameInfo.setText("Dealer gets Blackjack! Loss: €" + betAmount);
+        } else if (dealerScore > 21) { // Dealer bust
+            gameInfo.setText("Dealer goes Bust! Profit: €" + betAmount);
+            balance += betAmount * 2;
+            balanceLabel.setText(String.format("€%.2f", balance));
+        } else if (playerScore == dealerScore) { // Tie
+            gameInfo.setText("Tie!");
+            balance += betAmount;
+            balanceLabel.setText(String.format("€%.2f", balance));
+        } else { // Otherwise - dealer wins
+            gameInfo.setText("Dealer Wins! Loss: €" + betAmount);
+        }
+        outcomeHappened(); // If something's happened, this round is over. Show the results of round and Continue button
+
+    }
+
+    public static boolean simpleOutcomes() { // This runs automatically whenever deal is pressed or the player hits
+        boolean outcomeHasHappened = false;
+        int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
+        if (playerScore > 21 && playerCards.getNumAces() > 0) // If player has at least one ace and would otherwise lose (>21), subtract 10
+            playerScore -= 10;
+
+        if (playerScore == 21) { // Potential player blackjack
+
+            dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
+            updateCardPanels(); // Display new card
+            if (dealerCards.getTotalValue() == 21) { // If dealer ALSO gets a blackjack
+                gameInfo.setText("Push!"); // Push
+                balance += betAmount; // Give bet back to player
+            } else {
+                // Player gets a blackjack only
+                gameInfo.setText(String.format("Player gets Blackjack! Profit: €%.2f", 1.5f * betAmount));
+                balance +=  betAmount; // Add profits to balance
+            }
+            balanceLabel.setText(String.format("€%.2f", balance)); // Show new balance
+
+            outcomeHasHappened = true;
+            outcomeHappened(); // If something's happened, this round is over. Show the results of round and Continue button
+        } else if (playerScore > 21) { // If player goes bust
+            gameInfo.setText("Player goes Bust! Loss: €" + betAmount);
+            dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
+            updateCardPanels();
+            outcomeHasHappened = true;
+            outcomeHappened(); // If something's happened, this round is over. Show the results of round and Continue button
+        }
+        return outcomeHasHappened;
+
+    }
+
+    public static void stand() { // When stand button is pressed
+        if (simpleOutcomes()) // Check for any normal outcomes. If so, we don't need to do anything here so return.
+            return;
+
+        int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
+        if (playerScore > 21 && playerCards.getNumAces() > 0) // If player has at least one ace and would otherwise lose (>21), subtract 10
+            playerScore -= 10;
+
+        dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
+
+        int dealerScore = dealerCards.getTotalValue(); // Get dealer score as total of cards he has
+
+        while (dealerScore < 17) { // If dealer's hand is < 16, he needs to get more cards until it's > 17
+            dealerCards.myCards.add(deck.takeCard()); // Take a card from top of deck and add
+            dealerScore = dealerCards.getTotalValue();
+            if (dealerScore > 21 && dealerCards.getNumAces() > 0) // If there's an ace and total > 21, subtract 10
+                dealerScore -= 10;
+        }
+        updateCardPanels(); // Display new dealer's cards
+
+        // Determine final outcomes, give profits if so and display outcomes
+        if (playerScore > dealerScore) { // Player wins
+            gameInfo.setText("Player wins! Profit: €" + betAmount);
+            balance += betAmount * 2;
+            balanceLabel.setText(String.format("€%.2f", balance));
+        } else if (dealerScore == 21) { // Dealer blackjack
+            gameInfo.setText("Dealer gets Blackjack! Loss: €" + betAmount);
+        } else if (dealerScore > 21) { // Dealer bust
+            gameInfo.setText("Dealer goes Bust! Profit: €" + betAmount);
+            balance += betAmount * 2;
+            balanceLabel.setText(String.format("€%.2f", balance));
+        } else if (playerScore == dealerScore) { // Push
+            gameInfo.setText("Push!");
+            balance += betAmount;
+            balanceLabel.setText(String.format("€%.2f", balance));
+        } else { // Otherwise - dealer wins
+            gameInfo.setText("Dealer Wins! Loss: €" + betAmount);
+        }
+        outcomeHappened(); // If something's happened, this round is over. Show the results of round and Continue button
+
+    }
+
+    public static void outcomeHappened() { //If something's happened, this round is over. Show the results of round and Continue button
+
+        hitButton.setEnabled(false);
+        stayButton.setEnabled(false);
+        dblButton.setEnabled(false);
+        //splitButton.setEnabled(false);
+
+        // continue button display and refocus
+        gameInfo.setOpaque(true);
+        gameInfo.setForeground(Color.RED);
+        continueButton.setEnabled(true);
+        continueButton.setVisible(true);
+        continueButton.requestFocus();
+    }
+
+
+
+
+    public static void acceptOutcome() { // When outcome is reached
+
+        gameInfo.setOpaque(false);
+        gameInfo.setForeground(Color.ORANGE);
+
+        // Remove deal objects
+
+        frame.getContentPane().remove(dLabel);
+        frame.getContentPane().remove(pLabel);
+        frame.getContentPane().remove(hitButton);
+        frame.getContentPane().remove(stayButton);
+        frame.getContentPane().remove(dblButton);
+        //frame.getContentPane().remove(splitButton);
+        frame.getContentPane().remove(amountBet);
+        frame.getContentPane().remove(lblBetAmountDesc);
+        frame.getContentPane().remove(continueButton);
+        frame.getContentPane().remove(dealerCardPanel);
+        frame.getContentPane().remove(playerCardPanel);
+        gameInfo.setText("Please enter a bet and click Deal");
+        betAmountField.setEnabled(true);
+        dealButton.setEnabled(true);
+        dealButton.requestFocus();
+        frame.repaint();
+
+        if (balance <= 0) { // If out of funds, either top up or end game
+            int choice = JOptionPane.showOptionDialog(null, "You have run out of funds. Press Yes to add €100, or No to end the current game.", "Out of funds", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                balance += 100;
+                balanceLabel.setText(String.format("€%.2f", balance));
+            } else {
+                frame.getContentPane().removeAll();
+                frame.repaint();
+                initGuiObjects();
+                return;
+            }
+        }
+
+        roundCount++; // If 5 rounds, reinitialise the deck and reshuffle to prevent running out of cards
+        if (roundCount >= 30) {
+            deck.Shoe();
+            deck.shuffle();
+
+            shuffleInfo = new JLabel("Deck has been replenished and reshuffled!");
+            //lblShuffleInfo.setBackground(new Color(0, 128, 0));
+            shuffleInfo.setForeground(Color.ORANGE);
+            //lblShuffleInfo.setOpaque(true);
+            shuffleInfo.setFont(new Font("Arial", Font.BOLD, 20));
+            shuffleInfo.setHorizontalAlignment(SwingConstants.CENTER);
+            shuffleInfo.setBounds(235, 307, 430, 42);
+            frame.getContentPane().add(shuffleInfo);
+
+            roundCount = 0;
+        }
+    }
+
+
+}
 
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
