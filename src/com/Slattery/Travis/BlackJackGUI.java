@@ -452,7 +452,7 @@ public class BlackJackGUI {
 
         roundCount++;
         // If 30 rounds, reinitialise the deck and reshuffle to prevent running out of cards
-        if (roundCount >= 10) {
+        if (roundCount >= 30) {
             deck.Shoe();
             deck.shuffle();
             float percentage = (float) (wonHands * 100) / (roundCount - tieHands);
