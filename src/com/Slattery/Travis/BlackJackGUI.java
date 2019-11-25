@@ -137,6 +137,7 @@ public class BlackJackGUI {
         });
         frame.getContentPane().add(dealButton);
         dealButton.requestFocus();
+        sBalance = Double.parseDouble(balanceField.getText());
 
         frame.repaint();
 
@@ -170,7 +171,6 @@ public class BlackJackGUI {
         balance -= betAmount; // Subtract bet from balance
 
         balanceLabel.setText(String.format("€%.2f", balance));
-        sBalance = Double.parseDouble(balanceField.getText());
 
         betAmountField.setEnabled(false);
         dealButton.setEnabled(false);
@@ -296,27 +296,28 @@ public class BlackJackGUI {
         if (playerScore > dealerScore) { // Player wins
             gameInfo.setText("Player wins! Profit: €" + betAmount);
             balance += betAmount * 2;
-            balanceLabel.setText(String.format("€%.2f", balance));
             wonHands++;
         } else if (dealerScore == 21) { // Dealer blackjack
             gameInfo.setText("Dealer gets Blackjack! Loss: €" + betAmount);
+            balance -= betAmount;
         } else if (dealerScore > 21) { // Dealer bust
             gameInfo.setText("Dealer goes Bust! Profit: €" + betAmount);
             balance += betAmount * 2;
-            balanceLabel.setText(String.format("€%.2f", balance));
         } else if (playerScore == dealerScore) { // Tie
             gameInfo.setText("Tie!");
             balance += betAmount;
             tieHands++;
-            balanceLabel.setText(String.format("€%.2f", balance));
         } else { // Otherwise - dealer wins
             gameInfo.setText("Dealer Wins! Loss: €" + betAmount);
+            balance -= betAmount;
         }
+
+        balanceLabel.setText(String.format("€%.2f", balance));
         gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
 
     }
 
-    private static boolean gameOutcomes() { // This runs automatically whenever deal is pressed or the player hits
+    public static boolean gameOutcomes() { // This runs automatically whenever deal is pressed or the player hits
         boolean gameHasFinished = false;
         int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
         if (playerScore > 21 && playerCards.getNumAces() > 0) // If player has at least one ace and would otherwise lose (>21), subtract 10
@@ -327,14 +328,12 @@ public class BlackJackGUI {
             dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
             updateCardPanels(); // Display new card
             if (dealerCards.getTotalValue() == 21) { // If dealer ALSO gets a blackjack
-                gameInfo.setText("TIE!"); // tie
+                gameInfo.setText("TIE!"); // tie game
                 balance += betAmount; // Give bet back to player
-                tieHands++;
             } else {
                 // Player gets a blackjack only
-                gameInfo.setText(String.format("Player gets Blackjack! Profit: €%.2f", 1.5f * betAmount));
-                balance +=  betAmount;// Add profits to balance
-                wonHands++;
+                gameInfo.setText(String.format("Player gets Blackjack! Profit: €%.2f", (1.5f * betAmount)));
+                balance +=  (1.5f * betAmount); // Add profits to balance
             }
             balanceLabel.setText(String.format("€%.2f", balance)); // Show new balance
 
@@ -342,6 +341,8 @@ public class BlackJackGUI {
             gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
         } else if (playerScore > 21) { // If player goes bust
             gameInfo.setText("Player goes Bust! Loss: €" + betAmount);
+            balance -= betAmount;
+            balanceLabel.setText(String.format("€%.2f", balance));
             dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
             updateCardPanels();
             gameHasFinished = true;
@@ -350,7 +351,6 @@ public class BlackJackGUI {
         return gameHasFinished;
 
     }
-
     private static void stand() { // When stand button is pressed
         if (gameOutcomes()) // Check for any normal outcomes. If so, we don't need to do anything here so return.
             return;
@@ -376,21 +376,19 @@ public class BlackJackGUI {
             gameInfo.setText("Player wins! Profit: €" + betAmount);
             balance += betAmount * 2;
             wonHands++;
-            balanceLabel.setText(String.format("€%.2f", balance));
         } else if (dealerScore == 21) { // Dealer blackjack
             gameInfo.setText("Dealer gets Blackjack! Loss: €" + betAmount);
         } else if (dealerScore > 21) { // Dealer bust
             gameInfo.setText("Dealer goes Bust! Profit: €" + betAmount);
             balance += betAmount * 2;
-            balanceLabel.setText(String.format("€%.2f", balance));
         } else if (playerScore == dealerScore) { // tie game
             gameInfo.setText("TIE!");
             balance += betAmount;
             tieHands++;
-            balanceLabel.setText(String.format("€%.2f", balance));
         } else { // Otherwise - dealer wins
             gameInfo.setText("Dealer Wins! Loss: €" + betAmount);
         }
+        balanceLabel.setText(String.format("€%.2f", balance));
         gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
 
     }
@@ -443,6 +441,7 @@ public class BlackJackGUI {
             if (choice == JOptionPane.YES_OPTION) {
                 balance += 1000;
                 balanceLabel.setText(String.format("€%.2f", balance));
+                sBalance += 1000;
             } else {
                 frame.getContentPane().removeAll();
                 frame.repaint();
@@ -453,7 +452,7 @@ public class BlackJackGUI {
 
         roundCount++;
         // If 30 rounds, reinitialise the deck and reshuffle to prevent running out of cards
-        if (roundCount >= 30) {
+        if (roundCount >= 10) {
             deck.Shoe();
             deck.shuffle();
             float percentage = (float) (wonHands * 100) / (roundCount - tieHands);
