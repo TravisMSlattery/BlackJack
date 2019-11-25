@@ -2,9 +2,9 @@ package com.Slattery.Travis;
 import java.awt.*;
 import javax.swing.*;
 
-public class GameWindow extends JFrame {
+class GameWindow extends JFrame {
 
-    //The main window, displays the background image (note the dynamic boundaries are so the image stretches nicely for a given window size)
+    //The main window, displays the background image
 
     GameWindow() {
         setTitle("M.T Pockets Blackjack");
@@ -21,7 +21,7 @@ public class GameWindow extends JFrame {
     static class ImagePanel extends JPanel {
         private Image img;
 
-        public ImagePanel(String imgStr) { // Constructor, passed image string
+        ImagePanel(String imgStr) { // Constructor, passed image string
             this.img = new ImageIcon(imgStr).getImage();
             Dimension size = new Dimension(img.getWidth(null), img.getHeight(null)); // If we don't use setBounds (after instance is created), this is a fallback to the actual dimensions of the image
             setSize(size);

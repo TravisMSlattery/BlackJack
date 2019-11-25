@@ -5,98 +5,63 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/*#####################################
+ * Blackjack Game 2.0
+ * Travis Slattery
+ * This is a one-player blackjack game
+ * where the player plays against the
+ * dealer. Said player sets an initial
+ * balance, deals and then hits or
+ * stands until either getting a black-
+ * jack, winning, losing or pushing.
+ * When out of money the option to
+ * top up or end the game is given.
+ #####################################*/
+
 public class BlackJackGUI {
+
     private static JFrame frame = new GameWindow(); // Creating an instance of the MainFrame class.
 
-    private static Deck deck, dealerCards, playerCards; //Declaring Variables:
-    private static CardArray dealerCardPanel = null, playerCardPanel = null; // The deck of cards, the dealer's cards, the player's cards, the panels for the player's and dealer's cards
-    private static Card dealerHiddenCard;
+    private static Deck deck, dealerCards, playerCards; //splitCards; //Declaring Variables:
+    private static CardArray dealerCardPanel = null, playerCardPanel = null; //splitCardPanel = null; // The deck of cards, the dealer's cards, the player's cards, the panels for the player's and dealer's cards
+    private static Card dealerHiddenCard; //  and the hidden card of the dealer.
 
     private static double balance = 0.0; // Setting the initial amounts for the Balance,
     private static int betAmount = 0, roundCount = 0; // the amount the player bets and the number of rounds.
 
     // Creating the GUI elements in the window builder
     private static JTextField balanceField;
-    private static JLabel startBalance;
     private static JButton startButton;
     private static JButton endButton;
     private static JTextField betAmountField;
-    private static JLabel enterBetLabel;
     private static JButton dealButton;
-    private static JLabel currentBalance;
     private static JLabel balanceLabel;
     private static JLabel dLabel;
     private static JLabel pLabel;
     private static JButton hitButton;
     private static JButton stayButton;
     private static JButton dblButton;
+    //private static JButton splitButton;
     private static JLabel amountBet;
     private static JLabel lblBetAmountDesc;
     private static JLabel gameInfo;
     private static JButton continueButton;
     private static JLabel shuffleInfo = null;
 
-    //array of cards
-    //Card[] myCards;
-
-
-    //info Dialogs
-
-
-    // This function runs when the program starts or when the game ends. It displays the initial GUI objects to enter an initial balance and start/stop a game
-    public static void initGuiObjects() {
-        startButton = new JButton("New Game"); // New game button
-        startButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //newGame(); // Start game
-            }
-        });
-        startButton.setBounds(20, 610, 99, 50);
-        frame.getContentPane().add(startButton);
-
-        endButton = new JButton("End Game"); // End game button, this removes all GUI objects and starts from scratch
-        endButton.setEnabled(false);
-        endButton.setBounds(121, 610, 99, 50);
-        endButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.getContentPane().removeAll(); // Remove all objects from screen
-                frame.repaint(); // Repaint to show update
-                initGuiObjects(); // Restart the game logic and display the New Game menu
-            }
-        });
-        frame.getContentPane().add(endButton);
-
-        balanceField = new JTextField(); // Text field to store initial balance
-        balanceField.setText("1000");
-        balanceField.setBounds(131, 580, 89, 28);
-        frame.getContentPane().add(balanceField);
-        balanceField.setColumns(10);
-
-        startBalance = new JLabel("Initial Balance:"); // Initial balance label
-        startBalance.setFont(new Font("Arial", Font.BOLD, 13));
-        startBalance.setForeground(Color.WHITE);
-        startBalance.setBounds(30, 586, 100, 16);
-        frame.getContentPane().add(startBalance);
-    }
-
-    public static boolean isValidAmount(String s) { // This is to assure that the values entered for the initial balance and the player's bet are natural numbers.
+    private static boolean validAmount(String s) { // This is to assure that the values entered for the initial balance and the player's bet are natural numbers.
         try {
-            if (Integer.parseInt(s) > 0) // Ensure amount entered is > 0
-                return true;
-            else
-                return false;
+            // Ensure amount entered is > 0
+            return Integer.parseInt(s) > 0;
         } catch (NumberFormatException e) { // If not valid integer
             return false;
         }
     }
 
-
     // This function runs when the program starts or when the game ends. It displays the initial GUI objects to enter an initial balance and start/stop a game
-    public static void initGuiObjects() {
+    private static void loadGuiObjects() {
         startButton = new JButton("New Game"); // New game button
-        startButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
+        startButton.addActionListener(e -> {
+            newGame(); // Start game
         });
         startButton.setBounds(20, 610, 99, 50);
         frame.getContentPane().add(startButton);
@@ -104,12 +69,10 @@ public class BlackJackGUI {
         endButton = new JButton("End Game"); // End game button, this removes all GUI objects and starts from scratch
         endButton.setEnabled(false);
         endButton.setBounds(121, 610, 99, 50);
-        endButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.getContentPane().removeAll(); // Remove all objects from screen
-                frame.repaint(); // Repaint to show update
-                initGuiObjects(); // Restart the game logic and display the New Game menu
-            }
+        endButton.addActionListener(e -> {
+            frame.getContentPane().removeAll(); // Remove all objects from screen
+            frame.repaint(); // Repaint to show update
+            loadGuiObjects(); // Restart the game logic and display the New Game menu
         });
         frame.getContentPane().add(endButton);
 
@@ -119,17 +82,18 @@ public class BlackJackGUI {
         frame.getContentPane().add(balanceField);
         balanceField.setColumns(10);
 
-        startBalance = new JLabel("Initial Balance:"); // Initial balance label
+        JLabel startBalance = new JLabel("Initial Balance:"); // Initial balance label
         startBalance.setFont(new Font("Arial", Font.BOLD, 13));
         startBalance.setForeground(Color.WHITE);
         startBalance.setBounds(30, 586, 100, 16);
         frame.getContentPane().add(startBalance);
     }
-    public static void showBetGui() { // This runs when a new game is started. It initializes and displays the current balance label, deal amount and deal button
+
+    private static void showBetGui() { // This runs when a new game is started. It initializes and displays the current balance label, deal amount and deal button
 
         endButton.setEnabled(true);
 
-        currentBalance = new JLabel("Current Balance:"); // Current balance label
+        JLabel currentBalance = new JLabel("Current Balance:"); // Current balance label
         currentBalance.setHorizontalAlignment(SwingConstants.CENTER);
         currentBalance.setFont(new Font("Arial", Font.BOLD, 16));
         currentBalance.setForeground(Color.WHITE);
@@ -158,7 +122,7 @@ public class BlackJackGUI {
         betAmountField.setBounds(790, 580, 89, 28);
         frame.getContentPane().add(betAmountField);
 
-        enterBetLabel = new JLabel("Enter Bet:"); // Bet amount info label
+        JLabel enterBetLabel = new JLabel("Enter Bet:"); // Bet amount info label
         enterBetLabel.setFont(new Font("Arial", Font.BOLD, 14));
         enterBetLabel.setForeground(Color.WHITE);
         enterBetLabel.setBounds(689, 586, 100, 16);
@@ -166,10 +130,8 @@ public class BlackJackGUI {
 
         dealButton = new JButton("Deal"); // Deal button
         dealButton.setBounds(679, 610, 200, 50);
-        dealButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                deal(); // When clicked, deal
-            }
+        dealButton.addActionListener(e -> {
+            deal(); // When clicked, deal
         });
         frame.getContentPane().add(dealButton);
         dealButton.requestFocus();
@@ -178,7 +140,8 @@ public class BlackJackGUI {
 
     }
 
-    public static void deal() { // Runs when the Deal button is pressed. Draws two player and dealer cards (only displaying one of the dealer's cards) and asks for an action from the player, or if there's an immediate outcome (eg. blackjack straight away), it takes action
+
+    private static void deal() { // Runs when the Deal button is pressed. Draws two player and dealer cards (only displaying one of the dealer's cards) and asks for an action from the player, or if there's an immediate outcome (eg. blackjack straight away), it takes action
 
         if (shuffleInfo != null) // (Every 30 rounds the deck is reshuffled and this label is displayed. Hide it when a new round is started
             frame.getContentPane().remove(shuffleInfo);
@@ -187,7 +150,7 @@ public class BlackJackGUI {
         dealerCards = new Deck();
         playerCards = new Deck();
 
-        if (isValidAmount(betAmountField.getText()) == true) { // Parse bet amount given
+        if (validAmount(betAmountField.getText())) { // Parse bet amount given
             betAmount = Integer.parseInt(betAmountField.getText());
         } else {
             gameInfo.setText("Error: Bet must be a whole number!"); // Give an error
@@ -223,41 +186,42 @@ public class BlackJackGUI {
 
         hitButton = new JButton("Hit"); // Hit button
         hitButton.setBounds(200, 515, 140, 35);
-        hitButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                hit(); // When pressed, hit
-            }
+        hitButton.addActionListener(e -> {
+            hit(); // When pressed, hit
         });
         frame.getContentPane().add(hitButton);
         hitButton.requestFocus();
 
         stayButton = new JButton("Stand"); // Stand button
         stayButton.setBounds(380, 515, 140, 35);
-        stayButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                stand(); // When pressed, stand
-            }
+        stayButton.addActionListener(e -> {
+            stand(); // When pressed, stand
         });
         frame.getContentPane().add(stayButton);
 
 
         dblButton = new JButton("Double"); // Stand button
         dblButton.setBounds(560, 515, 140, 35);
-        dblButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dblBet(); // When pressed, stand
-            }
+        dblButton.addActionListener(e -> {
+            dblBet(); // When pressed, stand
         });
         frame.getContentPane().add(dblButton);
+
+        //splitButton = new JButton("Split"); // Stand button
+        //splitButton.setBounds(655, 515, 140, 35);
+        //splitButton.addActionListener(new ActionListener() {
+        //public void actionPerformed(ActionEvent e) {
+        //	split(); // When pressed, split
+        //}
+        //});
+        //frame.getContentPane().add(splitButton);
 
         continueButton = new JButton("Continue"); // When the final outcome is reached, press this to accept and continue the game
         continueButton.setEnabled(false);
         continueButton.setVisible(false);
         continueButton.setBounds(290, 444, 320, 35);
-        continueButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                acceptOutcome(); // Accept outcome
-            }
+        continueButton.addActionListener(e -> {
+            continueGame(); // Accept outcome
         });
         frame.getContentPane().add(continueButton);
 
@@ -288,24 +252,24 @@ public class BlackJackGUI {
 
         updateCardPanels(); // Display the two card panels
 
-        simpleOutcomes(); // Check for any automatic outcomes (i.e. immediate blackjack)
+        gameOutcomes(); // Check for any automatic outcomes (i.e. immediate blackjack)
 
     }
 
-    public static void hit() { // Add another card to player cards, show the new card and check for any outcomes
+    private static void hit() { // Add another card to player cards, show the new card and check for any outcomes
 
         playerCards.myCards.add(deck.takeCard());
         updateCardPanels();
-        simpleOutcomes();
+        gameOutcomes();
 
     }
-    public static void dblBet() { // Add another card to player cards, show the new card and check for any outcomes
+    private static void dblBet() { // Add another card to player cards, show the new card and check for any outcomes
         betAmount = betAmount*2;
         playerCards.myCards.add(deck.takeCard());
         updateCardPanels();
 
         int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
-        if (simpleOutcomes()) // Check for any normal outcomes. If so, we don't need to do anything here so return.
+        if (gameOutcomes()) // Check for any normal outcomes. If so, we don't need to do anything here so return.
             return;
 
         if (playerScore > 21 && playerCards.getNumAces() > 0) // If player has at least one ace and would otherwise lose (>21), subtract 10
@@ -341,12 +305,12 @@ public class BlackJackGUI {
         } else { // Otherwise - dealer wins
             gameInfo.setText("Dealer Wins! Loss: €" + betAmount);
         }
-        outcomeHappened(); // If something's happened, this round is over. Show the results of round and Continue button
+        gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
 
     }
 
-    public static boolean simpleOutcomes() { // This runs automatically whenever deal is pressed or the player hits
-        boolean outcomeHasHappened = false;
+    private static boolean gameOutcomes() { // This runs automatically whenever deal is pressed or the player hits
+        boolean gameHasFinished = false;
         int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
         if (playerScore > 21 && playerCards.getNumAces() > 0) // If player has at least one ace and would otherwise lose (>21), subtract 10
             playerScore -= 10;
@@ -365,21 +329,21 @@ public class BlackJackGUI {
             }
             balanceLabel.setText(String.format("€%.2f", balance)); // Show new balance
 
-            outcomeHasHappened = true;
-            outcomeHappened(); // If something's happened, this round is over. Show the results of round and Continue button
+            gameHasFinished = true;
+            gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
         } else if (playerScore > 21) { // If player goes bust
             gameInfo.setText("Player goes Bust! Loss: €" + betAmount);
             dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
             updateCardPanels();
-            outcomeHasHappened = true;
-            outcomeHappened(); // If something's happened, this round is over. Show the results of round and Continue button
+            gameHasFinished = true;
+            gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
         }
-        return outcomeHasHappened;
+        return gameHasFinished;
 
     }
 
-    public static void stand() { // When stand button is pressed
-        if (simpleOutcomes()) // Check for any normal outcomes. If so, we don't need to do anything here so return.
+    private static void stand() { // When stand button is pressed
+        if (gameOutcomes()) // Check for any normal outcomes. If so, we don't need to do anything here so return.
             return;
 
         int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
@@ -416,11 +380,11 @@ public class BlackJackGUI {
         } else { // Otherwise - dealer wins
             gameInfo.setText("Dealer Wins! Loss: €" + betAmount);
         }
-        outcomeHappened(); // If something's happened, this round is over. Show the results of round and Continue button
+        gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
 
     }
 
-    public static void outcomeHappened() { //If something's happened, this round is over. Show the results of round and Continue button
+    private static void gameOver() { //If something's happened, this round is over. Show the results of round and Continue button
 
         hitButton.setEnabled(false);
         stayButton.setEnabled(false);
@@ -438,7 +402,7 @@ public class BlackJackGUI {
 
 
 
-    public static void acceptOutcome() { // When outcome is reached
+    private static void continueGame() { // When outcome is reached
 
         gameInfo.setOpaque(false);
         gameInfo.setForeground(Color.ORANGE);
@@ -471,12 +435,12 @@ public class BlackJackGUI {
             } else {
                 frame.getContentPane().removeAll();
                 frame.repaint();
-                initGuiObjects();
+                loadGuiObjects();
                 return;
             }
         }
 
-        roundCount++; // If 5 rounds, reinitialise the deck and reshuffle to prevent running out of cards
+        roundCount++; // If 30 rounds, reinitialise the deck and reshuffle to prevent running out of cards
         if (roundCount >= 30) {
             deck.Shoe();
             deck.shuffle();
@@ -494,24 +458,57 @@ public class BlackJackGUI {
         }
     }
 
+    private static void newGame() { // When new game is started
 
-}
+        if (validAmount(balanceField.getText())) { // Check that balance is valid
+            balance = Integer.parseInt(balanceField.getText());
+        } else {
+            JOptionPane.showMessageDialog(frame, "Invalid balance! Please ensure it is a natural number.", "Error", JOptionPane.ERROR_MESSAGE);
+            balanceField.requestFocus();
+            return;
+        }
 
+        startButton.setEnabled(false);
+        balanceField.setEnabled(false);
 
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        showBetGui(); // Show bet controls
+
+        roundCount = 0;
+
+        deck = new Deck(); // Initialize dealer deck
+        deck.Shoe(); // Add all the cards (default 6 decks)
+        deck.shuffle(); // Shuffle
+
+    }
+
+    private static void updateCardPanels() { // Displays dealer and player cards as images
+        if (dealerCardPanel != null) { // If they're already added, remove them
+            frame.getContentPane().remove(dealerCardPanel);
+            frame.getContentPane().remove(playerCardPanel);
+            //frame.getContentPane().remove(splitCardPanel);
+        }
+        // Create and display two panels
+        dealerCardPanel = new CardArray(dealerCards, 420 - (dealerCards.getCount() * 40), 50, 70, 104, 10);
+        frame.getContentPane().add(dealerCardPanel);
+        playerCardPanel = new CardArray(playerCards, 420 - (playerCards.getCount() * 40), 370, 70, 104, 10);
+        frame.getContentPane().add(playerCardPanel);
+        //splitCardPanel = new CardArray(splitCards, 420 - (splitCards.getCount() * 40), 150, 70, 104, 10);
+        //frame.getContentPane().add(splitCardPanel);
+        frame.repaint();
+    }
+
+    public static void main(String[] args) {
 
         // Start of program
 
-        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 
-
-        initGuiObjects(); // Displays the initial GUI objects to enter an initial balance and start/stop a game
+        loadGuiObjects(); // Displays the initial GUI objects to enter an initial balance and start/stop a game
 
         frame.setVisible(true);
 
     }
+
+    public static int heightFromWidth(int width) { // 500x726 original size, helper function to get height proportional to width
+        return (int) (1f * width * (380f / 255f));
+    }
 }
-
-
-
-
