@@ -14,14 +14,16 @@ public class Deck {
         this.myCards.clear();
         String[] ranks = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
         int[] rankValues = { 11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10 };
+        int numDecks = 6;
 
         String[] suits = { "Clubs", "Diamonds", "Hearts", "Spades" };
-
+    for (int j = 1; j < numDecks; j++ ) {
         for (int i = 0; i < ranks.length; i++) {
             for (String suit : suits) {
                 this.myCards.add(new Card(ranks[i], suit, rankValues[i]));
             }
         }
+    }
     }
 
     Card takeCard() { // Removes card from top of card group's ArrayList
@@ -63,7 +65,6 @@ public class Deck {
             myCard.print();
         }
     }
-
 }
 
 
