@@ -1,19 +1,15 @@
 package com.Slattery.Travis;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
-import java.util.ArrayList;
+
 import javax.swing.*;
+import java.awt.*;
 
 class GameWindow extends JFrame {
 
     private JPanel backGround;
-   // private static JButton createButton;
-   // private static JButton loginButton;
-  //  private static JButton saveButton;
-   // private static JTextField passField;
-
+    // private static JButton createButton;
+    // private static JButton loginButton;
+    //  private static JButton saveButton;
+    // private static JTextField passField;
 
 
     //The main window, displays the background image
@@ -30,7 +26,6 @@ class GameWindow extends JFrame {
         setContentPane(bgImagePanel);
 
 
-
     }
 
     static class ImagePanel extends JPanel {
@@ -38,7 +33,8 @@ class GameWindow extends JFrame {
 
         ImagePanel(String imgStr) { // Constructor, passed image string
             this.img = new ImageIcon(imgStr).getImage();
-            Dimension size = new Dimension(img.getWidth(null), img.getHeight(null)); // If we don't use setBounds (after instance is created), this is a fallback to the actual dimensions of the image
+            Dimension size =
+                    new Dimension(img.getWidth(null), img.getHeight(null)); // If we don't use setBounds (after instance is created), this is a fallback to the actual dimensions of the image
             setSize(size);
             setLayout(null);
         }
@@ -47,7 +43,6 @@ class GameWindow extends JFrame {
             g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
         }
     }
-
 
 
 }

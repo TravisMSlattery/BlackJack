@@ -1,4 +1,5 @@
 package com.Slattery.Travis;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -6,7 +7,7 @@ import java.util.ArrayList;
 This is my player class it contains setters and getters for username, password, balance, winning hands tied hands and amount of hands played it also contains toString method
 
  */
-public class Player implements Serializable{ //implements serializable this is java class to save to a file
+public class Player implements Serializable { //implements serializable this is java class to save to a file
 
     ArrayList<Player> players = new ArrayList<>();
 
@@ -16,15 +17,15 @@ public class Player implements Serializable{ //implements serializable this is j
 
 
     public Player() {
-        this("Unknown","unknown", 0.0,0,0,0);
+        this("Unknown", "unknown", 0.0, 0, 0, 0);
     }
 
     /**
-     * @param username is where the username is stored
-     * @param password is where the password is stored
-     * @param balance is where the balance is stored
-     * @param wonHands is where the hands won is stored
-     * @param tieHands is where the hands tied is stored
+     * @param username    is where the username is stored
+     * @param password    is where the password is stored
+     * @param balance     is where the balance is stored
+     * @param wonHands    is where the hands won is stored
+     * @param tieHands    is where the hands tied is stored
      * @param handsplayed is where the hands played is stored
      */
     Player(final String username, final String password, final double balance, int wonHands, int tieHands, int handsplayed) {
@@ -45,41 +46,6 @@ public class Player implements Serializable{ //implements serializable this is j
     } //sets username
 
     /**
-     * @param password is set
-     */
-    public void setPassword(final String password) {
-        this.password = password;
-    } //sets password
-
-    /**
-     * @param balance is set
-     */
-    void setBalance(final double balance) {
-        this.balance = balance;
-    } // set balance
-
-    /**
-     * @param wonHands is set
-     */
-    void setWonHands(int wonHands) {
-        this.wonHands = wonHands;
-    } // set winning hans
-
-    /**
-     * @param tieHands is set
-     */
-    void setTieHands(int tieHands) {
-        this.tieHands = tieHands;
-    } // set tied hands
-
-    /**
-     * @param handsplayed is set
-     */
-    void setHandsplayed(int handsplayed) {
-        this.handsplayed = handsplayed;
-    } // set hands played
-
-    /**
      * @return the username
      */
     String getName() {
@@ -94,11 +60,25 @@ public class Player implements Serializable{ //implements serializable this is j
     } //returns password
 
     /**
+     * @param password is set
+     */
+    public void setPassword(final String password) {
+        this.password = password;
+    } //sets password
+
+    /**
      * @return the balance
      */
     double getBalance() {
         return this.balance;
     } //returns balance
+
+    /**
+     * @param balance is set
+     */
+    void setBalance(final double balance) {
+        this.balance = balance;
+    } // set balance
 
     /**
      * @return the hands won
@@ -108,11 +88,25 @@ public class Player implements Serializable{ //implements serializable this is j
     } //returns winning hands
 
     /**
+     * @param wonHands is set
+     */
+    void setWonHands(int wonHands) {
+        this.wonHands = wonHands;
+    } // set winning hans
+
+    /**
      * @return the hands tied
      */
     int getTieHands() {
         return this.tieHands;
     } //returns tie hands
+
+    /**
+     * @param tieHands is set
+     */
+    void setTieHands(int tieHands) {
+        this.tieHands = tieHands;
+    } // set tied hands
 
     /**
      * @return the hands played
@@ -122,11 +116,18 @@ public class Player implements Serializable{ //implements serializable this is j
     } //returns hands played
 
     /**
+     * @param handsplayed is set
+     */
+    void setHandsplayed(int handsplayed) {
+        this.handsplayed = handsplayed;
+    } // set hands played
+
+    /**
      * @return the toString method
      */
     @Override
     public String toString() {
-        return this.username + " " +  " \u20ac" + String.format("%.2f", this.balance);
+        return this.username + " " + " \u20ac" + String.format("%.2f", this.balance);
     } //  toString method
 }
 /*

@@ -24,11 +24,13 @@ public class BlackJackGUI {
     private static JFrame frame = new GameWindow(); // Creating an instance of the MainFrame class.
 
     private static Deck deck, dealerCards, playerCards; //splitCards; //Declaring Variables:
-    private static CardArray dealerCardPanel = null, playerCardPanel = null; //splitCardPanel = null; // The deck of cards, the dealer's cards, the player's cards, the panels for the player's and dealer's cards
+    private static CardArray dealerCardPanel = null, playerCardPanel = null;
+    //splitCardPanel = null; // The deck of cards, the dealer's cards, the player's cards, the panels for the player's and dealer's cards
     private static Card dealerHiddenCard; //  and the hidden card of the dealer.
 
     private static double balance = 0.0, sBalance = 0.0; //Setting balance
-    private static int betAmount = 0, roundCount = 0, wonHands = 0, tieHands = 0, handsplayed = 0;// the amount the player bets and the number of rounds hands won tied
+    private static int betAmount = 0, roundCount = 0, wonHands = 0, tieHands = 0, handsplayed = 0;
+    // the amount the player bets and the number of rounds hands won tied
     private static String pname = "";
 
     // Creating the GUI elements in the window builder
@@ -58,15 +60,12 @@ public class BlackJackGUI {
     private static JButton returnButton;
     private static File file = new File("Player.dat");
 
-
-        private static ArrayList<Player> players = new ArrayList<>();
-
-
+    private static ArrayList<Player> players = new ArrayList<>();
 
     public BlackJackGUI(GameWindow gameWindow) {
     }
 
-    private static void loadGame(){
+    private static void loadGame() {
 
         JLabel startBLabel = new JLabel("Starting Balance:"); // starting balance label
         startBLabel.setForeground(Color.WHITE);
@@ -115,24 +114,26 @@ public class BlackJackGUI {
         saveButton.setBounds(400, 300, 140, 35);
         frame.getContentPane().add(saveButton);
 
-        if(file.exists()){
-            loadFile(file);}
-             saveButton.addActionListener(e -> {
+        if (file.exists()) {
+            loadFile(file);
+        }
+        saveButton.addActionListener(e -> {
 
             loadFile(file);
-                String username = usernameField.getText();
-                for (Player pl : players) {
-                   if (username.equals(pl.getName())) {
-                       JOptionPane.showMessageDialog(null, "User already exists!");
-                    } else {
-                        players.add(new Player(usernameField.getText(), passwordField.getText(), Double.parseDouble(balanceField.getText()),wonHands = 0, tieHands=0,handsplayed=0));
-                        saveFile(file);
-                        JOptionPane.showMessageDialog(null, "Player created");
-                        newUserInfo.setVisible(false);
-                        balanceField.setVisible(false);
-                        startBLabel.setVisible(false);
-                    }
-              }
+            String username = usernameField.getText();
+            for (Player pl : players) {
+                if (username.equals(pl.getName())) {
+                    JOptionPane.showMessageDialog(null, "User already exists!");
+                } else {
+                    players.add(new Player(usernameField.getText(), passwordField.getText(), Double.parseDouble(balanceField.getText()),
+                            wonHands = 0, tieHands = 0, handsplayed = 0));
+                    saveFile(file);
+                    JOptionPane.showMessageDialog(null, "Player created");
+                    newUserInfo.setVisible(false);
+                    balanceField.setVisible(false);
+                    startBLabel.setVisible(false);
+                }
+            }
         });
 
         loginButton = new JButton("Login"); // Initial balance label
@@ -143,7 +144,7 @@ public class BlackJackGUI {
         loginButton.addActionListener(e -> {
             //loadProgress(file);
             String usr = usernameField.getText();
-            String ps =  passwordField.getText();
+            String ps = passwordField.getText();
             for (Player pl : players) {
                 if (usr.equals(pl.getName()) && ps.equals(pl.getPassword())) {
                     frame.getContentPane().removeAll();
@@ -163,6 +164,7 @@ public class BlackJackGUI {
 
 
     }
+
     private static boolean validAmount(String s) { // This is to assure that the values entered for the initial balance and the player's bet are natural numbers.
         try {
             // Ensure amount entered is > 0
@@ -171,8 +173,9 @@ public class BlackJackGUI {
             return false;
         }
     }
+
     // This function runs when the program starts or when the game ends. It displays the initial GUI objects to enter an initial balance and start/stop a game
-    private  static void loadGuiObjects() {
+    private static void loadGuiObjects() {
         frame.repaint();
 
         startButton = new JButton("New Game"); // New game button
@@ -281,7 +284,7 @@ public class BlackJackGUI {
         statsButton = new JButton("Stats"); // stats button
         statsButton.setBounds(775, 10, 100, 35);
         frame.getContentPane().add(statsButton);
-        statsButton.addActionListener(e -> stats() );
+        statsButton.addActionListener(e -> stats());
 
 
         gameInfo.setText("Please Hit, Stand or Double"); // Next instruction
@@ -321,7 +324,8 @@ public class BlackJackGUI {
         });
         frame.getContentPane().add(dblButton);
 
-        continueButton = new JButton("Continue"); // When the final outcome is reached, press this to accept and continue the game
+        continueButton =
+                new JButton("Continue"); // When the final outcome is reached, press this to accept and continue the game
         continueButton.setEnabled(false);
         continueButton.setVisible(false);
         continueButton.setBounds(290, 444, 320, 35); // was y 444
@@ -368,8 +372,9 @@ public class BlackJackGUI {
         gameOutcomes();
 
     }
+
     private static void dblBet() { // Add another card to player cards, show the new card and check for any outcomes
-        betAmount = betAmount*2;
+        betAmount = betAmount * 2;
         playerCards.myCards.add(deck.takeCard());
         updateCardPanels();
 
@@ -432,7 +437,7 @@ public class BlackJackGUI {
             } else {
                 // Player gets a blackjack only
                 gameInfo.setText(String.format(pname + " gets Blackjack! Profit: €%.2f", (2.5f * betAmount)));
-                balance +=  betAmount; // Add profits to balance
+                balance += betAmount; // Add profits to balance
             }
             balanceLabel.setText(String.format("€%.2f", balance)); // Show new balance
             frame.repaint(); //resets balance
@@ -450,6 +455,7 @@ public class BlackJackGUI {
         return gameHasFinished;
 
     }
+
     private static void stand() { // When stand button is pressed
         if (gameOutcomes()) // Check for any normal outcomes. If so, we don't need to do anything here so return.
             return;
@@ -513,8 +519,6 @@ public class BlackJackGUI {
     }
 
 
-
-
     private static void continueGame() { // When outcome is reached
 
         gameInfo.setOpaque(false);
@@ -539,7 +543,8 @@ public class BlackJackGUI {
         frame.repaint();
 
         if (balance <= 0) { // If out of funds, either top up or end game
-            int choice = JOptionPane.showOptionDialog(null, pname + " you have run out of funds. Press Yes to add €1000, or No to end the current game.", "Out of funds", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            int choice =
+                    JOptionPane.showOptionDialog(null, pname + " you have run out of funds. Press Yes to add €1000, or No to end the current game.", "Out of funds", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 
             if (choice == JOptionPane.YES_OPTION) {
                 balance += 1000;
@@ -563,7 +568,7 @@ public class BlackJackGUI {
                 pl.setHandsplayed(handsplayed);
             }
         }
-            saveFile(file); //  to save the players current balance
+        saveFile(file); //  to save the players current balance
         // If 30 rounds, reinitialise the deck and reshuffle to prevent running out of cards
         if (roundCount >= 30) {
             deck.Shoe();
@@ -615,15 +620,11 @@ public class BlackJackGUI {
     }
 
 
-
     public static int heightFromWidth(int width) { // 500x726 original size, helper function to get height proportional to width
         return (int) (1f * width * (380f / 255f));
     }
 
     private static void actionPerformed(ActionEvent e) {
-    }
-
-    public void setVisible() {
     }
 
     private static void stats() {
@@ -645,22 +646,24 @@ public class BlackJackGUI {
         returnButton = new JButton("Return"); // return button
         returnButton.setBounds(10, 10, 100, 35);
         frame.getContentPane().add(returnButton);
-        returnButton.addActionListener(e -> removeStats() );
+        returnButton.addActionListener(e -> removeStats());
 
         frame.repaint();
 
         float percentage = (float) (wonHands * 100) / (handsplayed - tieHands);
         double profit = balance - sBalance;
-        statsInfo = new JLabel("<html>You played " + handsplayed + "<br>Starting balance " + String.format("€%.2f",sBalance) +
-                "<br>You Won " + wonHands + "<br>Tie Games " + tieHands + "<br>Your final balance is " + String.format("€%.2f", balance) +
-                "<br>Profit/Loss is " + String.format("€%.2f",profit) +
-                "<br>Your win percentage is " + String.format("%.0f",percentage)+"%" +"</html>", SwingConstants.CENTER);
+        statsInfo =
+                new JLabel("<html>You played " + handsplayed + "<br>Starting balance " + String.format("€%.2f", sBalance) +
+                        "<br>You Won " + wonHands + "<br>Tie Games " + tieHands + "<br>Your final balance is " + String.format("€%.2f", balance) +
+                        "<br>Profit/Loss is " + String.format("€%.2f", profit) +
+                        "<br>Your win percentage is " + String.format("%.0f", percentage) + "%" + "</html>", SwingConstants.CENTER);
         statsInfo.setForeground(Color.WHITE);
         statsInfo.setFont(new Font("Arial", Font.BOLD, 30));
         statsInfo.setBounds(200, 100, 500, 500);
         frame.getContentPane().add(statsInfo);
 
     }
+
     private static void removeStats() {
 
 
@@ -684,15 +687,14 @@ public class BlackJackGUI {
 
     }
 
-        private static void saveFile(File file) {
-            try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
-                (objectOutputStream).writeObject(players);
+    private static void saveFile(File file) {
+        try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+            (objectOutputStream).writeObject(players);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
+    }
 
     private static void loadFile(File file) {
         try (final ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
@@ -701,7 +703,6 @@ public class BlackJackGUI {
             e.printStackTrace();
         }
     }
-
 
     public static void main(String[] args) {
 
@@ -712,6 +713,9 @@ public class BlackJackGUI {
 
         frame.setVisible(true);
 
+    }
+
+    public void setVisible() {
     }
 
 }
