@@ -97,6 +97,14 @@ public class BlackJackGUI {
         balanceField.setColumns(10);
         balanceField.setVisible(false);
 
+        if (validAmount(balanceField.getText())) { // Check that balance is valid
+           balance = Integer.parseInt(balanceField.getText());
+          } else {
+            JOptionPane.showMessageDialog(frame, "Invalid balance! Please ensure it is a natural number.", "Error", JOptionPane.ERROR_MESSAGE);
+            balanceField.requestFocus();
+            return;
+        }
+
 
         usernameField = new JTextField(); // Text field to enter username
         usernameField.setBounds(400, 150, 140, 35);
@@ -150,6 +158,7 @@ public class BlackJackGUI {
                     frame.getContentPane().removeAll();
                     pname = pl.getName();
                     sBalance = pl.getBalance();
+                    balance = pl.getBalance();
                     wonHands = pl.getWonHands();
                     tieHands = pl.getTieHands();
                     handsplayed = pl.getHandsplayed();
@@ -241,7 +250,6 @@ public class BlackJackGUI {
         });
         frame.getContentPane().add(dealButton);
         dealButton.requestFocus();
-        //sBalance = Double.parseDouble(balanceField.getText());
 
         frame.repaint();
 
@@ -400,20 +408,21 @@ public class BlackJackGUI {
         // Determine final outcomes, give profits if so and display outcomes
         if (playerScore > dealerScore) { // Player wins
             gameInfo.setText(pname + " wins! Profit: €" + betAmount);
-            balance += betAmount * 2;
+            balance += betAmount;
             wonHands++;
         } else if (dealerScore == 21) { // Dealer blackjack
             gameInfo.setText("Dealer gets Blackjack! Loss: €" + betAmount);
             balance -= betAmount;
         } else if (dealerScore > 21) { // Dealer bust
             gameInfo.setText("Dealer goes Bust! Profit: €" + betAmount);
-            balance += betAmount * 2;
+            balance += betAmount;
         } else if (playerScore == dealerScore) { // Tie
             gameInfo.setText("Tie!");
             balance += betAmount;
             tieHands++;
         } else { // Otherwise - dealer wins
             gameInfo.setText("Dealer Wins! Loss: €" + betAmount);
+            balance -= betAmount;
         }
         balanceLabel.setText(String.format("€%.2f", balance));
         frame.repaint();
@@ -436,8 +445,9 @@ public class BlackJackGUI {
                 balance += betAmount; // Give bet back to player
             } else {
                 // Player gets a blackjack only
-                gameInfo.setText(String.format(pname + " gets Blackjack! Profit: €%.2f", (2.5f * betAmount)));
-                balance += betAmount; // Add profits to balance
+                gameInfo.setText(String.format(pname + " gets Blackjack! Profit: €%.2f", (1.5f * betAmount)));
+                balance += betAmount * 1.5f; // Add profits to balance
+                balanceLabel.setText(String.format("€%.2f", balance));
             }
             balanceLabel.setText(String.format("€%.2f", balance)); // Show new balance
             frame.repaint(); //resets balance
@@ -446,6 +456,7 @@ public class BlackJackGUI {
             gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
         } else if (playerScore > 21) { // If player goes bust
             gameInfo.setText(pname + " goes Bust! Loss: €" + betAmount);
+            balance -= betAmount;
             balanceLabel.setText(String.format("€%.2f", balance)); //resets the balance
             dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
             updateCardPanels();
@@ -479,24 +490,24 @@ public class BlackJackGUI {
         // Determine final outcomes, give profits if so and display outcomes
         if (playerScore > dealerScore) { // Player wins
             gameInfo.setText(pname + " wins! Profit: €" + betAmount);
-            balance += betAmount * 2;
-            balanceLabel.setText(String.format("€%.2f", balance));
+            balance += betAmount;
             wonHands++;
         } else if (dealerScore == 21) { // Dealer blackjack
             gameInfo.setText("Dealer gets Blackjack! Loss: €" + betAmount);
+            balance -= betAmount;
         } else if (dealerScore > 21) { // Dealer bust
             gameInfo.setText("Dealer goes Bust! Profit: €" + betAmount);
-            balance += betAmount * 2;
-            balanceLabel.setText(String.format("€%.2f", balance));
+            balance += betAmount;
             wonHands++;
         } else if (playerScore == dealerScore) { // tie game
             gameInfo.setText("TIE!");
             balance += betAmount;
-            balanceLabel.setText(String.format("€%.2f", balance));
             tieHands++;
         } else { // Otherwise - dealer wins
             gameInfo.setText("Dealer Wins! Loss: €" + betAmount);
+            balance -= betAmount;
         }
+        balanceLabel.setText(String.format("€%.2f", balance));
         frame.repaint();
         gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
 
@@ -584,14 +595,6 @@ public class BlackJackGUI {
     }
 
     private static void newGame() { // When new game is started
-
-        if (validAmount(balanceField.getText())) { // Check that balance is valid
-            balance = Integer.parseInt(balanceField.getText());
-        } else {
-            JOptionPane.showMessageDialog(frame, "Invalid balance! Please ensure it is a natural number.", "Error", JOptionPane.ERROR_MESSAGE);
-            balanceField.requestFocus();
-            return;
-        }
 
         startButton.setEnabled(false);
         balanceField.setEnabled(true);
