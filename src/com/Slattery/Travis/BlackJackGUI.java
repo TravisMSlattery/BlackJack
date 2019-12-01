@@ -53,12 +53,13 @@ public class BlackJackGUI {
     private static JButton continueButton;
     private static JLabel shuffleInfo = null;
     private static JLabel statsInfo = null;
+    private static JLabel newUserInfo = null;
     private static JButton statsButton;
     private static JButton returnButton;
     private static File file = new File("Player.dat");
 
 
-    private static ArrayList<Player> players = new ArrayList<>();
+        private static ArrayList<Player> players = new ArrayList<>();
 
 
 
@@ -82,6 +83,13 @@ public class BlackJackGUI {
         passLabel.setForeground(Color.WHITE);
         passLabel.setBounds(250, 200, 140, 35);
         frame.getContentPane().add(passLabel);
+
+        JLabel newUserInfo = new JLabel("Please enter a username, password, and a starting balance"); // new user label
+        newUserInfo.setForeground(Color.WHITE);
+        newUserInfo.setBounds(200, 350, 400, 60);
+        frame.getContentPane().add(newUserInfo);
+        newUserInfo.setVisible(false);
+
 
         balanceField = new JTextField(); // Text field to store starting balance
         balanceField.setText("1000");
@@ -108,20 +116,23 @@ public class BlackJackGUI {
         frame.getContentPane().add(saveButton);
 
         if(file.exists()){
-                loadFile(file);}
-        saveButton.addActionListener(e -> {
+            loadFile(file);}
+             saveButton.addActionListener(e -> {
 
             loadFile(file);
                 String username = usernameField.getText();
                 for (Player pl : players) {
-                    if (username.equals(pl.getName())) {
+                   if (username.equals(pl.getName())) {
                        JOptionPane.showMessageDialog(null, "User already exists!");
                     } else {
                         players.add(new Player(usernameField.getText(), passwordField.getText(), Double.parseDouble(balanceField.getText()),wonHands = 0, tieHands=0,handsplayed=0));
                         saveFile(file);
                         JOptionPane.showMessageDialog(null, "Player created");
+                        newUserInfo.setVisible(false);
+                        balanceField.setVisible(false);
+                        startBLabel.setVisible(false);
                     }
-               }
+              }
         });
 
         loginButton = new JButton("Login"); // Initial balance label
@@ -140,18 +151,16 @@ public class BlackJackGUI {
                     userLabel.setVisible(false);
                     passLabel.setVisible(false);
                     balanceField.setVisible(false);
+                    newUserInfo.setVisible(false);
                     pname = pl.getName();
                     sBalance = pl.getBalance();
                     wonHands = pl.getWonHands();
                     tieHands = pl.getTieHands();
                     handsplayed = pl.getHandsplayed();
-                    System.out.println("Logged in");
                 } else {
-                    // loadGame();
-                    System.out.println("denied");
                     startBLabel.setVisible(true);
                     balanceField.setVisible(true);
-                   // gameInfo.setText("Please enter a username password and starting balance");
+                    newUserInfo.setVisible(true);
                 }
             }
         });
@@ -687,28 +696,23 @@ public class BlackJackGUI {
     }
 
         private static void saveFile(File file) {
-        try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
-            (objectOutputStream).writeObject(players);
+            try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+                (objectOutputStream).writeObject(players);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        System.out.println("saved");
-
-        for(Player p: players)
-            System.out.println(p);
-
-    }
 
     private static void loadFile(File file) {
         try (final ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
-            players = (ArrayList<Player>)objectInputStream.readObject();
+            players = (ArrayList<Player>) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("Loaded");
     }
+
 
     public static void main(String[] args) {
 
