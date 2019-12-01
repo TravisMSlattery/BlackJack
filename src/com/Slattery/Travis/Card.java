@@ -3,7 +3,7 @@ package com.Slattery.Travis;
 
 class Card { // This class is created for every card and stores the information for each of them
     // Variables to store rank, suit and value of card
-    String rank, suit;
+    public String  rank, suit;
     int value;
 
     Card(String r, String s, int v) { // Constructor - initialise values

@@ -1,8 +1,20 @@
 package com.Slattery.Travis;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 class GameWindow extends JFrame {
+
+    private JPanel backGround;
+   // private static JButton createButton;
+   // private static JButton loginButton;
+  //  private static JButton saveButton;
+   // private static JTextField passField;
+
+
 
     //The main window, displays the background image
 
@@ -13,11 +25,14 @@ class GameWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setResizable(false);
-
         ImagePanel bgImagePanel = new ImagePanel("background.png");
         bgImagePanel.setBounds(0, 0, this.getWidth(), this.getHeight());
         setContentPane(bgImagePanel);
+
+
+
     }
+
     static class ImagePanel extends JPanel {
         private Image img;
 
@@ -32,5 +47,7 @@ class GameWindow extends JFrame {
             g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
         }
     }
+
+
 
 }
