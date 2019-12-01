@@ -146,17 +146,13 @@ public class BlackJackGUI {
             String ps =  passwordField.getText();
             for (Player pl : players) {
                 if (usr.equals(pl.getName()) && ps.equals(pl.getPassword())) {
-                    loadGuiObjects();
-                    startBLabel.setVisible(false);
-                    userLabel.setVisible(false);
-                    passLabel.setVisible(false);
-                    balanceField.setVisible(false);
-                    newUserInfo.setVisible(false);
+                    frame.getContentPane().removeAll();
                     pname = pl.getName();
                     sBalance = pl.getBalance();
                     wonHands = pl.getWonHands();
                     tieHands = pl.getTieHands();
                     handsplayed = pl.getHandsplayed();
+                    loadGuiObjects();
                 } else {
                     startBLabel.setVisible(true);
                     balanceField.setVisible(true);
@@ -177,13 +173,6 @@ public class BlackJackGUI {
     }
     // This function runs when the program starts or when the game ends. It displays the initial GUI objects to enter an initial balance and start/stop a game
     private  static void loadGuiObjects() {
-
-        loginButton.setVisible(false);
-        saveButton.setVisible(false);
-        passwordField.setVisible(false);
-        usernameField.setVisible(false);
-        //balanceField.setVisible(false);
-
         frame.repaint();
 
         startButton = new JButton("New Game"); // New game button
