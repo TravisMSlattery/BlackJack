@@ -627,7 +627,7 @@ public class BlackJackGUI {
     private static void actionPerformed(ActionEvent e) {
     }
 
-    private static void stats() {
+    private static void stats() { // displays a stats page when stats button is pressed
 
 
         frame.getContentPane().remove(dLabel);
@@ -664,7 +664,7 @@ public class BlackJackGUI {
 
     }
 
-    private static void removeStats() {
+    private static void removeStats() { // removes stats windows and add back in the gui elements
 
 
         frame.getContentPane().add(dLabel);
@@ -687,7 +687,7 @@ public class BlackJackGUI {
 
     }
 
-    private static void saveFile(File file) {
+    private static void saveFile(File file) { //to save player details to player.dat I got help from Johnny B and SK for persistance
         try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
             (objectOutputStream).writeObject(players);
 
@@ -696,7 +696,7 @@ public class BlackJackGUI {
         }
     }
 
-    private static void loadFile(File file) {
+    private static void loadFile(File file) { //retrieves players details from player.dat
         try (final ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
             players = (ArrayList<Player>) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
