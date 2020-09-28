@@ -98,8 +98,8 @@ public class BlackJackGUI {
         balanceField.setVisible(false);
 
         if (validAmount(balanceField.getText())) { // Check that balance is valid
-           balance = Integer.parseInt(balanceField.getText());
-          } else {
+            balance = Integer.parseInt(balanceField.getText());
+        } else {
             JOptionPane.showMessageDialog(frame, "Invalid balance! Please ensure it is a natural number.", "Error", JOptionPane.ERROR_MESSAGE);
             balanceField.requestFocus();
             return;

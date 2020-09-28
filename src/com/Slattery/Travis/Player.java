@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
-*This is my player class it contains setters and getters for username, password, balance, winning hands tied hands and amount of hands played it also contains toString method
+ * This is my player class it contains setters and getters for username, password, balance, winning hands tied hands and amount of hands played it also contains toString method
  */
 public class Player implements Serializable { //implements serializable this is java class to save to a file
 
