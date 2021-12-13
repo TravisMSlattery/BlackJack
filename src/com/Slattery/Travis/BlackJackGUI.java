@@ -21,25 +21,32 @@ import java.util.ArrayList;
 
 public class BlackJackGUI {
 
-    private static JFrame frame = new GameWindow(); // Creating an instance of the MainFrame class.
+    static JFrame frame = new GameWindow(); // Creating an instance of the MainFrame class.
 
-    private static Deck deck, dealerCards, playerCards; //splitCards; //Declaring Variables:
+    public static Deck deck;
+    public static Deck dealerCards;
+    public static Deck playerCards; //splitCards; //Declaring Variables:
     private static CardArray dealerCardPanel = null, playerCardPanel = null;
     //splitCardPanel = null; // The deck of cards, the dealer's cards, the player's cards, the panels for the player's and dealer's cards
     private static Card dealerHiddenCard; //  and the hidden card of the dealer.
 
-    private static double balance = 0.0, sBalance = 0.0; //Setting balance
-    private static int betAmount = 0, roundCount = 0, wonHands = 0, tieHands = 0, handsplayed = 0;
+    public static double balance = 0.0;
+    private static double sBalance = 0.0; //Setting balance
+    public static int betAmount = 0;
+    private static int roundCount = 0;
+    public static int wonHands = 0;
+    public static int tieHands = 0;
+    private static int handsplayed = 0;
     // the amount the player bets and the number of rounds hands won tied
-    private static String pname = "";
+    public static String pname = "";
 
     // Creating the GUI elements in the window builder
     private static JTextField balanceField;
     private static JButton startButton;
     private static JButton endButton;
-    private static JTextField betAmountField;
+    static JTextField betAmountField;
     private static JButton dealButton;
-    private static JLabel balanceLabel;
+    public static JLabel balanceLabel;
     private static JLabel dLabel;
     private static JLabel pLabel;
     private static JButton hitButton;
@@ -51,7 +58,7 @@ public class BlackJackGUI {
     private static JTextField usernameField;
     private static JTextField passwordField;
     private static JLabel lblBetAmountDesc;
-    private static JLabel gameInfo;
+    public static JLabel gameInfo;
     private static JButton continueButton;
     private static JLabel shuffleInfo = null;
     private static JLabel statsInfo = null;
@@ -65,7 +72,7 @@ public class BlackJackGUI {
     public BlackJackGUI(GameWindow gameWindow) {
     }
 
-    private static void loadGame() {
+    static void loadGame() {
 
         JLabel startBLabel = new JLabel("Starting Balance:"); // starting balance label
         startBLabel.setForeground(Color.WHITE);
@@ -100,9 +107,10 @@ public class BlackJackGUI {
         if (validAmount(balanceField.getText())) { // Check that balance is valid
             balance = Integer.parseInt(balanceField.getText());
         } else {
-            JOptionPane.showMessageDialog(frame, "Invalid balance! Please ensure it is a natural number.", "Error", JOptionPane.ERROR_MESSAGE);
-            balanceField.requestFocus();
-            return;
+          PlayerNotifier.error();
+        }
+        if( balance < 100){
+            PlayerNotifier.insufficientfunds();
         }
 
 
@@ -126,13 +134,20 @@ public class BlackJackGUI {
             loadFile(file);
         }
         saveButton.addActionListener(e -> {
-
             loadFile(file);
             String username = usernameField.getText();
             for (Player pl : players) {
                 if (username.equals(pl.getName())) {
                     JOptionPane.showMessageDialog(null, "User already exists!");
+                }
+                if (validAmount(balanceField.getText())) { // Check that balance is valid
+                    balance = Integer.parseInt(balanceField.getText());
                 } else {
+                    PlayerNotifier.error();
+                }
+                if( balance < 100){
+                    PlayerNotifier.insufficientfunds();
+                }
                     players.add(new Player(usernameField.getText(), passwordField.getText(), Double.parseDouble(balanceField.getText()),
                             wonHands = 0, tieHands = 0, handsplayed = 0));
                     saveFile(file);
@@ -141,7 +156,7 @@ public class BlackJackGUI {
                     balanceField.setVisible(false);
                     startBLabel.setVisible(false);
                 }
-            }
+
         });
 
         loginButton = new JButton("Login"); // Initial balance label
@@ -270,15 +285,14 @@ public class BlackJackGUI {
         if (validAmount(betAmountField.getText())) { // Parse bet amount given
             betAmount = Integer.parseInt(betAmountField.getText());
         } else {
-            gameInfo.setText("Error: Bet must be a whole number!"); // Give an error
-            betAmountField.requestFocus();
-            return;
+            PlayerNotifier.error();
+        }
+        if (betAmount < 100){
+            PlayerNotifier.warning();
         }
 
         if (betAmount > balance) { // If bet is higher than balance
-            gameInfo.setText("Error: Bet higher than balance!"); // Give an error
-            betAmountField.requestFocus();
-            return;
+            PlayerNotifier.funds();
         }
         balance -= betAmount; // Subtract bet from balance
 
@@ -433,6 +447,14 @@ public class BlackJackGUI {
         int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
         if (playerScore > 21 && playerCards.getNumAces() > 0) // If player has at least one ace and would otherwise lose (>21), subtract 10
             playerScore -= 10;
+        int dealerScore = dealerCards.getTotalValue(); // Get dealer score as total of cards he has
+
+        while (dealerScore < 17) { // If dealer's hand is < 17, he needs to get more cards until it's > 17
+            dealerCards.myCards.add(deck.takeCard()); // Take a card from top of deck and add
+            dealerScore = dealerCards.getTotalValue();
+            if (dealerScore > 21 && dealerCards.getNumAces() > 0) // If there's an ace and total > 21, subtract 10
+                dealerScore -= 10;
+        }
 
         if (playerScore == 21) { // Potential player blackjack
 
@@ -469,8 +491,6 @@ public class BlackJackGUI {
             return;
 
         int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
-        if (playerScore > 21 && playerCards.getNumAces() > 0) // If player has at least one ace and would otherwise lose (>21), subtract 10
-            playerScore -= 10;
 
         dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
 
@@ -525,7 +545,7 @@ public class BlackJackGUI {
     }
 
 
-    private static void continueGame() { // When outcome is reached
+    static void continueGame() { // When outcome is reached
 
         gameInfo.setOpaque(false);
         gameInfo.setForeground(Color.ORANGE);
@@ -700,20 +720,6 @@ public class BlackJackGUI {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-
-        // Start of program
-
-
-        loadGame(); // Displays the initial GUI objects to enter an initial balance and start/stop a game
-
-        frame.setVisible(true);
-
-    }
-
-    public void setVisible() {
     }
 
 }

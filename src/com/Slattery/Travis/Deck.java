@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Deck {
 
-    ArrayList<Card> myCards = new ArrayList<>();
+    public ArrayList<Card> myCards = new ArrayList<>();
 
     void Shoe() {
         this.myCards.clear();
@@ -25,7 +25,7 @@ public class Deck {
         }
     }
 
-    Card takeCard() { // Removes card from top of card group's ArrayList
+    public Card takeCard() { // Removes card from top of card group's ArrayList
         // and returns it
         if (this.myCards.size() < 1) {
             System.out.println("Error: no more cards!");
@@ -41,13 +41,13 @@ public class Deck {
         Collections.shuffle(this.myCards, rng); // Swapping a randomly selected element into the "current position"
     }
 
-    int getTotalValue() {
+    public int getTotalValue() {
         int totalValue = 0;
         for (Card myCard : this.myCards) totalValue += myCard.value;
         return totalValue;
     }
 
-    int getNumAces() {
+    public int getNumAces() {
         int numAces = 0;
         for (Card myCard : this.myCards)
             if (myCard.rank.equals("Ace"))
