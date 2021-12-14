@@ -1,5 +1,7 @@
 package com.Slattery.Travis;
 
+import com.Slattery.Travis.Template.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -68,11 +70,22 @@ public class BlackJackGUI {
     private static File file = new File("Player.dat");
 
     private static ArrayList<Player> players = new ArrayList<>();
+    private  GameTemplate gameTemplate;
 
-    public BlackJackGUI(GameWindow gameWindow) {
+    public BlackJackGUI() {
     }
 
-    static void loadGame() {
+
+
+    public static double getBal(){
+        return balance;
+    }
+
+    public static double getBetAmount(){
+        return betAmount;
+    }
+
+     void loadGame() {
 
         JLabel startBLabel = new JLabel("Starting Balance:"); // starting balance label
         startBLabel.setForeground(Color.WHITE);
@@ -112,6 +125,7 @@ public class BlackJackGUI {
         if( balance < 100){
             PlayerNotifier.insufficientfunds();
         }
+
 
 
         usernameField = new JTextField(); // Text field to enter username
@@ -199,7 +213,7 @@ public class BlackJackGUI {
     }
 
     // This function runs when the program starts or when the game ends. It displays the initial GUI objects to enter an initial balance and start/stop a game
-    private static void loadGuiObjects() {
+    private void loadGuiObjects() {
         frame.repaint();
 
         startButton = new JButton("New Game"); // New game button
@@ -221,7 +235,7 @@ public class BlackJackGUI {
 
     }
 
-    private static void showBetGui() { // This runs when a new game is started. It initializes and displays the current balance label, deal amount and deal button
+    private void showBetGui() { // This runs when a new game is started. It initializes and displays the current balance label, deal amount and deal button
 
         JLabel currentBalance = new JLabel("Current Balance:"); // Current balance label
         currentBalance.setHorizontalAlignment(SwingConstants.CENTER);
@@ -271,7 +285,7 @@ public class BlackJackGUI {
     }
 
 
-    private static void deal() { // Runs when the Deal button is pressed. Draws two player and dealer cards (only displaying one of the dealer's cards) and asks for an action from the player, or if there's an immediate outcome (eg. blackjack straight away), it takes action
+    private void deal() { // Runs when the Deal button is pressed. Draws two player and dealer cards (only displaying one of the dealer's cards) and asks for an action from the player, or if there's an immediate outcome (eg. blackjack straight away), it takes action
 
         if (shuffleInfo != null) // (Every 25 rounds the deck is reshuffled and this label is displayed. Hide it when a new round is started
             frame.getContentPane().remove(shuffleInfo);
@@ -382,149 +396,81 @@ public class BlackJackGUI {
         playerCards.myCards.add(deck.takeCard());
 
         updateCardPanels(); // Display the two card panels
-
-        gameOutcomes(); // Check for any automatic outcomes (i.e. immediate blackjack)
+        if(playerCards.getTotalValue() == 21 || dealerCards.getTotalValue() == 21){
+            gameOutcomes();
+        }
 
     }
 
-    private static void hit() { // Add another card to player cards, show the new card and check for any outcomes
+    private void hit() { // Add another card to player cards, show the new card and check for any outcomes
 
         playerCards.myCards.add(deck.takeCard());
         updateCardPanels();
-        gameOutcomes();
+        if(playerCards.getTotalValue()>21){
+            gameOutcomes();
+        }
 
     }
 
-    private static void dblBet() { // Add another card to player cards, show the new card and check for any outcomes
+    private void dblBet() { // Add another card to player cards, show the new card and check for any outcomes
         betAmount = betAmount * 2;
         playerCards.myCards.add(deck.takeCard());
+        dealerCards.myCards.set(0, dealerHiddenCard);
         updateCardPanels();
-
-        int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
-        if (gameOutcomes()) // Check for any normal outcomes. If so, we don't need to do anything here so return.
-            return;
-
-        if (playerScore > 21 && playerCards.getNumAces() > 0) // If player has at least one ace and would otherwise lose (>21), subtract 10
-            playerScore -= 10;
-
-        dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
-
-        int dealerScore = dealerCards.getTotalValue(); // Get dealer score as total of cards he has
-
-        while (dealerScore < 17) { // If dealer's hand is < 17, he needs to get more cards until it's > 17
-            dealerCards.myCards.add(deck.takeCard()); // Take a card from top of deck and add
-            dealerScore = dealerCards.getTotalValue();
-            if (dealerScore > 21 && dealerCards.getNumAces() > 0) // If there's an ace and total > 21, subtract 10
-                dealerScore -= 10;
-        }
-        updateCardPanels(); // Display new dealer's cards
-
-        // Determine final outcomes, give profits if so and display outcomes
-        if (playerScore > dealerScore) { // Player wins
-            gameInfo.setText(pname + " wins! Profit: €" + betAmount);
-            balance += betAmount * 2;
-            wonHands++;
-        } else if (dealerScore == 21) { // Dealer blackjack
-            gameInfo.setText("Dealer gets Blackjack! Loss: €" + betAmount);
-        } else if (dealerScore > 21) { // Dealer bust
-            gameInfo.setText("Dealer goes Bust! Profit: €" + betAmount);
-            balance += betAmount * 2;
-        } else if (playerScore == dealerScore) { // Tie
-            gameInfo.setText("Tie!");
-            balance += betAmount;
-            tieHands++;
-        } else { // Otherwise - dealer wins
-            gameInfo.setText("Dealer Wins! Loss: €" + betAmount);
-        }
-        balanceLabel.setText(String.format("€%.2f", balance));
+        gameOutcomes();
+        balanceLabel.setText(String.format("€%.0f", balance));
         frame.repaint();
         gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
 
     }
+    private void stand() {// When stand button is pressed
+        dealerCards.myCards.set(0, dealerHiddenCard);
+        updateCardPanels();
+        gameOutcomes();
+        balanceLabel.setText(String.format("€%.0f", balance));
+        frame.repaint();
+        gameOver();
+    }
 
-    private static boolean gameOutcomes() { // This runs automatically whenever deal is pressed or the player hits
+
+    private boolean gameOutcomes() { // This runs automatically whenever deal is pressed or the player hits
         boolean gameHasFinished = false;
         int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
         if (playerScore > 21 && playerCards.getNumAces() > 0) // If player has at least one ace and would otherwise lose (>21), subtract 10
             playerScore -= 10;
-        int dealerScore = dealerCards.getTotalValue(); // Get dealer score as total of cards he has
 
+        int dealerScore = dealerCards.getTotalValue(); // Get dealer score as total of cards he has
         while (dealerScore < 17) { // If dealer's hand is < 17, he needs to get more cards until it's > 17
             dealerCards.myCards.add(deck.takeCard()); // Take a card from top of deck and add
             dealerScore = dealerCards.getTotalValue();
             if (dealerScore > 21 && dealerCards.getNumAces() > 0) // If there's an ace and total > 21, subtract 10
                 dealerScore -= 10;
         }
-
-        if (playerScore == 21) { // Potential player blackjack
-
+        if (playerScore == 21 && dealerScore == 21) { // Potential player blackjack
             dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
             updateCardPanels(); // Display new card
-            if (dealerCards.getTotalValue() == 21) { // If dealer ALSO gets a blackjack
-                gameInfo.setText("TIE!"); // tie game
-                balance += betAmount; // Give bet back to player
-            } else {
-                // Player gets a blackjack only
-                gameInfo.setText(String.format(pname + " gets Blackjack! Profit: €%.2f", (2.5f * betAmount)));
-                balance += betAmount * 2.5f; // Add profits to balance
-                balanceLabel.setText(String.format("€%.2f", balance));
-            }
-            balanceLabel.setText(String.format("€%.2f", balance)); // Show new balance
-            frame.repaint(); //resets balance
-
-            gameHasFinished = true;
-            gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
-        } else if (playerScore > 21) { // If player goes bust
-            gameInfo.setText(pname + " goes Bust! Loss: €" + betAmount);
-            balanceLabel.setText(String.format("€%.2f", balance)); //resets the balance
-            dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
-            updateCardPanels();
-            gameHasFinished = true;
-            gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
+            gameTemplate = new Tie();
+            gameTemplate.updateScoresAndBalances();
+        } else if(playerScore == 21){
+            gameTemplate = new PlayerBlackJack();
+            gameTemplate.updateScoresAndBalances();
         }
-        return gameHasFinished;
-
-    }
-
-    private static void stand() { // When stand button is pressed
-        if (gameOutcomes()) // Check for any normal outcomes. If so, we don't need to do anything here so return.
-            return;
-
-        int playerScore = playerCards.getTotalValue(); // Get player score as total of cards he has
-
-        dealerCards.myCards.set(0, dealerHiddenCard); // Replace hidden dealer's card with actual card
-
-        int dealerScore = dealerCards.getTotalValue(); // Get dealer score as total of cards he has
-
-        while (dealerScore < 17) { // If dealer's hand is < 17, he needs to get more cards until it's > 17
-            dealerCards.myCards.add(deck.takeCard()); // Take a card from top of deck and add
-            dealerScore = dealerCards.getTotalValue();
-            if (dealerScore > 21 && dealerCards.getNumAces() > 0) // If there's an ace and total > 21, subtract 10
-                dealerScore -= 10;
+        if (playerScore > 21 && dealerScore <= 21){
+            gameTemplate = new DealerWins();
+            gameTemplate.updateScoresAndBalances();
         }
-        updateCardPanels(); // Display new dealer's cards
-
-        // Determine final outcomes, give profits if so and display outcomes
-        if (playerScore > dealerScore) { // Player wins
-            gameInfo.setText(pname + " wins! Profit: €" + betAmount);
-            balance += betAmount * 2;
-            wonHands++;
-        } else if (dealerScore == 21) { // Dealer blackjack
-            gameInfo.setText("Dealer gets Blackjack! Loss: €" + betAmount);
-        } else if (dealerScore > 21) { // Dealer bust
-            gameInfo.setText("Dealer goes Bust! Profit: €" + betAmount);
-            balance += betAmount * 2;
-            wonHands++;
-        } else if (playerScore == dealerScore) { // tie game
-            gameInfo.setText("TIE!");
-            balance += betAmount;
-            tieHands++;
-        } else { // Otherwise - dealer wins
-            gameInfo.setText("Dealer Wins! Loss: €" + betAmount);
+        if (playerScore > dealerScore && playerScore <= 21){
+            gameTemplate = new PlayerWins();
+            gameTemplate.updateScoresAndBalances();
         }
-        balanceLabel.setText(String.format("€%.2f", balance));
-        frame.repaint();
+        if (dealerScore > 21 && playerScore <= 21){
+            gameTemplate = new PlayerWins();
+            gameTemplate.updateScoresAndBalances();
+        }
+
+        gameHasFinished = true;
         gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
+        return gameHasFinished;
 
     }
 
@@ -545,7 +491,7 @@ public class BlackJackGUI {
     }
 
 
-    static void continueGame() { // When outcome is reached
+     void continueGame() { // When outcome is reached
 
         gameInfo.setOpaque(false);
         gameInfo.setForeground(Color.ORANGE);
@@ -609,7 +555,7 @@ public class BlackJackGUI {
         }
     }
 
-    private static void newGame() { // When new game is started
+    private void newGame() { // When new game is started
 
         startButton.setEnabled(false);
         balanceField.setEnabled(true);
