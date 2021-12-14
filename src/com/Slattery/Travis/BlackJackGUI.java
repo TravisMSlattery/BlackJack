@@ -1,5 +1,6 @@
 package com.Slattery.Travis;
 
+import com.Slattery.Travis.Observer.PlayerNotifier;
 import com.Slattery.Travis.Template.*;
 
 import javax.swing.*;
@@ -46,7 +47,7 @@ public class BlackJackGUI {
     private static JTextField balanceField;
     private static JButton startButton;
     private static JButton endButton;
-    static JTextField betAmountField;
+    public static JTextField betAmountField;
     private static JButton dealButton;
     public static JLabel balanceLabel;
     private static JLabel dLabel;
@@ -85,7 +86,7 @@ public class BlackJackGUI {
         return betAmount;
     }
 
-     void loadGame() {
+     public void loadGame() {
 
         JLabel startBLabel = new JLabel("Starting Balance:"); // starting balance label
         startBLabel.setForeground(Color.WHITE);
@@ -323,7 +324,7 @@ public class BlackJackGUI {
         statsButton.addActionListener(e -> stats());
 
 
-        gameInfo.setText("Please Hit, Stand or Double"); // Next instruction
+        //gameInfo.setText("Please Hit, Stand or Double"); // Next instruction
 
         dLabel = new JLabel("Dealer"); // Dealer label
         dLabel.setForeground(Color.WHITE);
@@ -418,7 +419,6 @@ public class BlackJackGUI {
         dealerCards.myCards.set(0, dealerHiddenCard);
         updateCardPanels();
         gameOutcomes();
-        balanceLabel.setText(String.format("€%.0f", balance));
         frame.repaint();
         gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
 
@@ -427,7 +427,6 @@ public class BlackJackGUI {
         dealerCards.myCards.set(0, dealerHiddenCard);
         updateCardPanels();
         gameOutcomes();
-        balanceLabel.setText(String.format("€%.0f", balance));
         frame.repaint();
         gameOver();
     }
@@ -467,11 +466,10 @@ public class BlackJackGUI {
             gameTemplate = new PlayerWins();
             gameTemplate.updateScoresAndBalances();
         }
-
         gameHasFinished = true;
         gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
-        return gameHasFinished;
 
+        return gameHasFinished;
     }
 
     private static void gameOver() { //If something's happened, this round is over. Show the results of round and Continue button
@@ -491,7 +489,7 @@ public class BlackJackGUI {
     }
 
 
-     void continueGame() { // When outcome is reached
+     public void continueGame() { // When outcome is reached
 
         gameInfo.setOpaque(false);
         gameInfo.setForeground(Color.ORANGE);

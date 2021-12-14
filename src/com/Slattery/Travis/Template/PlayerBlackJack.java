@@ -7,6 +7,7 @@ public class PlayerBlackJack extends GameTemplate {
     public void updateScoresAndBalances() {
         updateDisplay("BlackJack! You win");
         updateBalance(betAmount, CalcType.BJ_BAL);
-
+        updateBalanceDisplay();
+        wonHands++;
     }
 }

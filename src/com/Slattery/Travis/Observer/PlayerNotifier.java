@@ -1,4 +1,6 @@
-package com.Slattery.Travis;
+package com.Slattery.Travis.Observer;
+
+import com.Slattery.Travis.BlackJackGUI;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;
