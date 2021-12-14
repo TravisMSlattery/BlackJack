@@ -404,7 +404,6 @@ public class BlackJackGUI {
     }
 
     private void hit() { // Add another card to player cards, show the new card and check for any outcomes
-
         playerCards.myCards.add(deck.takeCard());
         updateCardPanels();
         if(playerCards.getTotalValue()>21){
@@ -416,7 +415,6 @@ public class BlackJackGUI {
     private void dblBet() { // Add another card to player cards, show the new card and check for any outcomes
         betAmount = betAmount * 2;
         playerCards.myCards.add(deck.takeCard());
-        dealerCards.myCards.set(0, dealerHiddenCard);
         updateCardPanels();
         gameOutcomes();
         frame.repaint();
@@ -424,7 +422,6 @@ public class BlackJackGUI {
 
     }
     private void stand() {// When stand button is pressed
-        dealerCards.myCards.set(0, dealerHiddenCard);
         updateCardPanels();
         gameOutcomes();
         frame.repaint();
@@ -439,8 +436,10 @@ public class BlackJackGUI {
             playerScore -= 10;
 
         int dealerScore = dealerCards.getTotalValue(); // Get dealer score as total of cards he has
+        dealerCards.myCards.set(0, dealerHiddenCard);
         while (dealerScore < 17) { // If dealer's hand is < 17, he needs to get more cards until it's > 17
-            dealerCards.myCards.add(deck.takeCard()); // Take a card from top of deck and add
+            dealerCards.myCards.add(deck.takeCard());// Take a card from top of deck and add
+            updateCardPanels();
             dealerScore = dealerCards.getTotalValue();
             if (dealerScore > 21 && dealerCards.getNumAces() > 0) // If there's an ace and total > 21, subtract 10
                 dealerScore -= 10;
@@ -450,9 +449,11 @@ public class BlackJackGUI {
             updateCardPanels(); // Display new card
             gameTemplate = new Tie();
             gameTemplate.updateScoresAndBalances();
+            gameHasFinished = true;
         } else if(playerScore == 21){
             gameTemplate = new PlayerBlackJack();
             gameTemplate.updateScoresAndBalances();
+            gameHasFinished = true;
         }
         if (playerScore > 21 && dealerScore <= 21){
             gameTemplate = new DealerWins();
@@ -466,7 +467,7 @@ public class BlackJackGUI {
             gameTemplate = new PlayerWins();
             gameTemplate.updateScoresAndBalances();
         }
-        gameHasFinished = true;
+
         gameOver(); // If something's happened, this round is over. Show the results of round and Continue button
 
         return gameHasFinished;

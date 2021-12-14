@@ -7,6 +7,7 @@ public class DealerWins extends GameTemplate {
         updateDisplay("Dealer Wins");
         updateBalance(betAmount, CalcType.SUBTRACT_BAL);
         updateBalanceDisplay();
+        System.out.println(balance);
     }
 
 }

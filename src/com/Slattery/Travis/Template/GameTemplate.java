@@ -15,7 +15,8 @@ public abstract class GameTemplate {
         return balance;
     }
     public void updateBalanceDisplay(){
-        balanceLabel.setText(String.format("€.0f",balance));
+        balanceLabel.setText(String.valueOf(balance));
+        System.out.println(balance);
     }
    abstract public void updateScoresAndBalances();
 
