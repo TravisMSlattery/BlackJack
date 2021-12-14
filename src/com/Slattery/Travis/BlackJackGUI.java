@@ -73,6 +73,8 @@ public class BlackJackGUI {
     private static ArrayList<Player> players = new ArrayList<>();
     private  GameTemplate gameTemplate;
 
+    private PlayerNotifier messenger;
+
     public BlackJackGUI() {
     }
 
@@ -121,10 +123,10 @@ public class BlackJackGUI {
         if (validAmount(balanceField.getText())) { // Check that balance is valid
             balance = Integer.parseInt(balanceField.getText());
         } else {
-          PlayerNotifier.error();
+          messenger.error( "You cannot bet fractions" );
         }
         if( balance < 100){
-            PlayerNotifier.insufficientfunds();
+          messenger.error( "You need to deposit more that the minimum bet" );
         }
 
 
@@ -158,10 +160,10 @@ public class BlackJackGUI {
                 if (validAmount(balanceField.getText())) { // Check that balance is valid
                     balance = Integer.parseInt(balanceField.getText());
                 } else {
-                    PlayerNotifier.error();
+                    messenger.error( "You cannot bet fractions" );
                 }
                 if( balance < 100){
-                    PlayerNotifier.insufficientfunds();
+                    messenger.insufficientfunds( "You need to deposit more that the minimum bet" );
                 }
                     players.add(new Player(usernameField.getText(), passwordField.getText(), Double.parseDouble(balanceField.getText()),
                             wonHands = 0, tieHands = 0, handsplayed = 0));
@@ -300,14 +302,14 @@ public class BlackJackGUI {
         if (validAmount(betAmountField.getText())) { // Parse bet amount given
             betAmount = Integer.parseInt(betAmountField.getText());
         } else {
-            PlayerNotifier.error();
+            messenger.error( "You cannot bet fractions" );
         }
         if (betAmount < 100){
-            PlayerNotifier.warning();
+             messenger.warning("This table has a minimum bet of €100");
         }
 
         if (betAmount > balance) { // If bet is higher than balance
-            PlayerNotifier.funds();
+            messenger.error("You cannot bet more than your balance");
         }
         balance -= betAmount; // Subtract bet from balance
 
