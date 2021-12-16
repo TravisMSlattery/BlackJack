@@ -36,7 +36,8 @@ private Player() {
 
     }
 
-    public static Player getInstace(final String username, final String password, final double balance, int wonHands, int tieHands, int handsplayed){
+    public static synchronized Player getInstace(final String username, final String password, final double balance,
+                                    int wonHands, int tieHands, int handsplayed){
         if(player == null)
             player = new Player(username,  password, balance, wonHands,tieHands, handsplayed);
         return player;

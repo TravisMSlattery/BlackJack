@@ -663,7 +663,7 @@ public class BlackJackGUI {
     }
 
     private static void saveFile(File file) { //to save player details to player.dat I got help from Johnny B and SK for persistance
-        System.out.println("Goot Here @@@ Save File");
+
         try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
             (objectOutputStream).writeObject(players);
 
@@ -674,7 +674,6 @@ public class BlackJackGUI {
     }
 
     private static void loadFile(File file) { //retrieves players details from player.dat
-
         try (final ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
 
             players = (ArrayList<Player>) objectInputStream.readObject();
