@@ -90,6 +90,7 @@ public class BlackJackGUI {
 
      public void loadGame() {
 
+
         JLabel startBLabel = new JLabel("Starting Balance:"); // starting balance label
         startBLabel.setForeground(Color.WHITE);
         startBLabel.setBounds(250, 250, 140, 35);
@@ -141,9 +142,11 @@ public class BlackJackGUI {
             loadFile(file);
         }
         saveButton.addActionListener(e -> {
+//            System.out.println(players.size());
             loadFile(file);
             String username = usernameField.getText();
             for (Player pl : players) {
+
                 if (username.equals(pl.getName())) {
                     JOptionPane.showMessageDialog(null, "User already exists!");
                 }
@@ -159,9 +162,9 @@ public class BlackJackGUI {
                     balance = 0;
                     loadGame();
                 }
-                    players.add(new Player(usernameField.getText(), passwordField.getText(), Integer.parseInt(balanceField.getText()),
-                            wonHands = 0, tieHands = 0, handsplayed = 0));
-                    saveFile(file);
+                players.add(Player.getInstace(usernameField.getText(), passwordField.getText(), Integer.parseInt(balanceField.getText()),
+                        wonHands = 0, tieHands = 0, handsplayed = 0));
+                saveFile(file);
                     JOptionPane.showMessageDialog(null, "Player created");
                     newUserInfo.setVisible(false);
                     balanceField.setVisible(false);
@@ -177,7 +180,7 @@ public class BlackJackGUI {
         frame.getContentPane().add(loginButton);
         loadFile(file);
         loginButton.addActionListener(e -> {
-            //loadProgress(file);
+//            loadProgress(file);
             String usr = usernameField.getText();
             String ps = passwordField.getText();
             for (Player pl : players) {
@@ -660,8 +663,10 @@ public class BlackJackGUI {
     }
 
     private static void saveFile(File file) { //to save player details to player.dat I got help from Johnny B and SK for persistance
+        System.out.println("Goot Here @@@ Save File");
         try (final ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
             (objectOutputStream).writeObject(players);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -669,8 +674,12 @@ public class BlackJackGUI {
     }
 
     private static void loadFile(File file) { //retrieves players details from player.dat
+
         try (final ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
+
             players = (ArrayList<Player>) objectInputStream.readObject();
+
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

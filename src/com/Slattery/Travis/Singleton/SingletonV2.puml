@@ -1,0 +1,27 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Player {
+~ ArrayList<Player> players
+- String username
+- double balance
+- int wonHands
+-Player(username:String,password:String,balance:double,
+wonHands:int,tieHands:int, handsplayed:int)
++ void setUsername(String)
+~ String getName()
+~ String getPassword()
++ void setPassword(String)
+
+}
+
+note right of Player::Player(
+ The Constructor is set to private
+ Now no object can be created of this object
+ only the object can access itself but and instace needs
+ to be created.
+end note
+
+
+java.io.Serializable <|..Player
+@enduml

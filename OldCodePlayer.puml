@@ -1,0 +1,24 @@
+@startuml
+class com.Slattery.Travis.Player {
+~ ArrayList<Player> players
+- String username
+- double balance
+- int wonHands
++ void setUsername(String)
+~ String getName()
+~ String getPassword()
++ void setPassword(String)
+~ double getBalance()
+~ void setBalance(double)
+~ int getWonHands()
+~ void setWonHands(int)
+~ int getTieHands()
+~ void setTieHands(int)
+~ int getHandsplayed()
+~ void setHandsplayed(int)
++ String toString()
+}
+
+
+java.io.Serializable <|.. com.Slattery.Travis.Player
+@enduml

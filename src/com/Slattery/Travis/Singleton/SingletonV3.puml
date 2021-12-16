@@ -1,0 +1,35 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Player {
+~ ArrayList<Player> players
+-player:Player
+- String username
+- double balance
+- int wonHands
+-Player(username:String,password:String,balance:double,
+wonHands:int,tieHands:int, handsplayed:int)
++ getInstance(username:String,password:String,balance:double,
+  wonHands:int,tieHands:int, handsplayed:int): Player
++ void setUsername(String)
+~ String getName()
+~ String getPassword()
++ void setPassword(String)
+
+}
+
+note right of Player::getInstance
+The getInstace method is a public method
+wich will create and return and instance
+of the player class.
+
+public Player getInstance(){
+if(player == null)
+    return new Player();
+ return player;
+}
+end note
+
+
+java.io.Serializable <|..Player
+@enduml

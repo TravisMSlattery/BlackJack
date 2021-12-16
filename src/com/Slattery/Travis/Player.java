@@ -6,16 +6,15 @@ import java.util.ArrayList;
 /**
  * This is my player class it contains setters and getters for username, password, balance, winning hands tied hands and amount of hands played it also contains toString method
  */
-public class Player implements Serializable { //implements serializable this is java class to save to a file
-
-    ArrayList<Player> players = new ArrayList<>();
+public class Player implements Serializable {
+    private static Player player; //implements serializable this is java class to save to a file
 
     private String username, password; // string variables
     private double balance; // double balance variable
     private int wonHands, tieHands, handsplayed;
 
 
-    public Player() {
+private Player() {
         this("Unknown", "unknown", 0.0, 0, 0, 0);
     }
 
@@ -27,7 +26,7 @@ public class Player implements Serializable { //implements serializable this is 
      * @param tieHands    is where the hands tied is stored
      * @param handsplayed is where the hands played is stored
      */
-    Player(final String username, final String password, final double balance, int wonHands, int tieHands, int handsplayed) {
+  private Player(final String username, final String password, final double balance, int wonHands, int tieHands, int handsplayed) {
         this.username = username;
         this.balance = balance;
         this.password = password;
@@ -35,6 +34,12 @@ public class Player implements Serializable { //implements serializable this is 
         this.tieHands = tieHands;
         this.handsplayed = handsplayed;
 
+    }
+
+    public static Player getInstace(final String username, final String password, final double balance, int wonHands, int tieHands, int handsplayed){
+        if(player == null)
+            player = new Player(username,  password, balance, wonHands,tieHands, handsplayed);
+        return player;
     }
 
     /**

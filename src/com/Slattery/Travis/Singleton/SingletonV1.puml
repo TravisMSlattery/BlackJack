@@ -1,0 +1,26 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Player {
+~ ArrayList<Player> players
+- String username
+- double balance
+- int wonHands
++Player(username:String,password:String,balance:double,
+wonHands:int,tieHands:int, handsplayed:int)
++ void setUsername(String)
+~ String getName()
+~ String getPassword()
++ void setPassword(String)
+
+}
+
+note right of Player::Player(
+  The Constructor is public and multiple
+  instance of the palyer objecst can be
+  instanciated.
+end note
+
+
+java.io.Serializable <|..Player
+@enduml
