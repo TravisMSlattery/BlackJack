@@ -1,0 +1,30 @@
+@startuml
+skinparam classAttributeIconSize 0
+class com.Slattery.Travis.PlayerNotifier {
++ {static} void warning()
++ {static} void error()
++ {static} void funds()
++ {static} void insufficientfunds()
+}
+class com.Slattery.Travis.BlackJackGUI {
+- {static} double balance
+- {static} int betAmount
+- {static} JTextField balanceField
+- {static} JButton startButton
+- {static} JButton endButton
+~ {static} JTextField betAmountField
+- {static} JButton dealButton
+- {static} JLabel balanceLabel
+- {static} JLabel amountBet
+- {static} JButton loginButton
+- {static} JButton saveButton
+- {static} JButton continueButton
+~ {static} void loadGame()
+- {static} boolean validAmount(String)
+- {static} void loadGuiObjects()
+~ {static} void continueGame()
+- {static} void newGame()
+- {static} void saveFile(File)
+- {static} void loadFile(File)
+}
+@enduml

@@ -16,7 +16,6 @@ public abstract class GameTemplate {
     }
     public void updateBalanceDisplay(){
         balanceLabel.setText(String.valueOf(balance));
-        System.out.println(balance);
     }
    abstract public void updateScoresAndBalances();
 

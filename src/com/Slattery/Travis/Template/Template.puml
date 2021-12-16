@@ -1,0 +1,37 @@
+@startuml
+skinparam classAttributeIconSize 0
+class com.Slattery.Travis.Template.PlayerBlackJack {
++ void updateScoresAndBalances()
+}
+class com.Slattery.Travis.Template.PlayerWins {
++ void updateScoresAndBalances()
+}
+class com.Slattery.Travis.Template.DealerWins {
++ void updateScoresAndBalances()
+}
+abstract class com.Slattery.Travis.Template.GameTemplate {
+~ double betAmount
+~ double balance
++ void updateDisplay(String)
++ void updateBalance(double,CalcType)
++ {abstract}void updateScoresAndBalances()
+}
+class com.Slattery.Travis.Template.Tie {
++ void updateScoresAndBalances()
+}
+class com.Slattery.Travis.BlackJackGUI {
++ {static} double getBal()
++ {static} double getBetAmount()
+- void hit()
+- void dblBet()
+- void stand()
+- boolean gameOutcomes()
+
+}
+
+
+com.Slattery.Travis.Template.GameTemplate <|-- com.Slattery.Travis.Template.PlayerBlackJack
+com.Slattery.Travis.Template.GameTemplate <|-- com.Slattery.Travis.Template.PlayerWins
+com.Slattery.Travis.Template.GameTemplate <|-- com.Slattery.Travis.Template.DealerWins
+com.Slattery.Travis.Template.GameTemplate <|-- com.Slattery.Travis.Template.Tie
+@enduml

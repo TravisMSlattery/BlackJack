@@ -15,18 +15,15 @@ public class PlayerNotifier {
     public static void warning( String message ) {
         JOptionPane.showMessageDialog((Component)null, message, "WARNING!", 2);
         BlackJackGUI.betAmountField.requestFocus();
-        black.continueGame();
     }
 
     public static void error( String message ) {
         JOptionPane.showMessageDialog((Component)null, message, "ERROR", 0);
         BlackJackGUI.betAmountField.requestFocus();
-        black.continueGame();
     }
 
     public static void insufficientfunds(String message) {
         JOptionPane.showMessageDialog((Component)null, message, "ERROR", 0);
-        //BlackJackGUI.betAmountField.requestFocus();
-        black.loadGame();
+        BlackJackGUI.betAmountField.requestFocus();
     }
 }

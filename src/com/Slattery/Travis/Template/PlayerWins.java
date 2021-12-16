@@ -9,7 +9,6 @@ public class PlayerWins extends GameTemplate {
         updateDisplay("Player Wins");
         updateBalance(betAmount, CalcType.WIN_BAL);
         updateBalanceDisplay();
-        System.out.println(balance);
         wonHands++;
     }
 }

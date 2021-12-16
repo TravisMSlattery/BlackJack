@@ -33,8 +33,8 @@ public class BlackJackGUI {
     //splitCardPanel = null; // The deck of cards, the dealer's cards, the player's cards, the panels for the player's and dealer's cards
     private static Card dealerHiddenCard; //  and the hidden card of the dealer.
 
-    public static double balance = 0.0;
-    private static double sBalance = 0.0; //Setting balance
+    public static int balance = 0;
+    private static int sBalance = 0; //Setting balance
     public static int betAmount = 0;
     private static int roundCount = 0;
     public static int wonHands = 0;
@@ -65,10 +65,10 @@ public class BlackJackGUI {
     private static JButton continueButton;
     private static JLabel shuffleInfo = null;
     private static JLabel statsInfo = null;
-    private static JLabel newUserInfo = null;
+    private static final JLabel newUserInfo = null;
     private static JButton statsButton;
     private static JButton returnButton;
-    private static File file = new File("Player.dat");
+    private static final File file = new File("Player.dat");
 
     private static ArrayList<Player> players = new ArrayList<>();
     private  GameTemplate gameTemplate;
@@ -120,16 +120,6 @@ public class BlackJackGUI {
         balanceField.setColumns(10);
         balanceField.setVisible(false);
 
-        if (validAmount(balanceField.getText())) { // Check that balance is valid
-            balance = Integer.parseInt(balanceField.getText());
-        } else {
-          messenger.error( "You cannot bet fractions" );
-        }
-        if( balance < 100){
-          messenger.error( "You need to deposit more that the minimum bet" );
-        }
-
-
 
         usernameField = new JTextField(); // Text field to enter username
         usernameField.setBounds(400, 150, 140, 35);
@@ -159,13 +149,17 @@ public class BlackJackGUI {
                 }
                 if (validAmount(balanceField.getText())) { // Check that balance is valid
                     balance = Integer.parseInt(balanceField.getText());
-                } else {
-                    messenger.error( "You cannot bet fractions" );
+                } else{
+                    PlayerNotifier.error( "You cannot bet fractions" );
+                    balance = 0;
+                    loadGame();
                 }
                 if( balance < 100){
-                    messenger.insufficientfunds( "You need to deposit more that the minimum bet" );
+                    PlayerNotifier.insufficientfunds( "You need to deposit more that the minimum bet" );
+                    balance = 0;
+                    loadGame();
                 }
-                    players.add(new Player(usernameField.getText(), passwordField.getText(), Double.parseDouble(balanceField.getText()),
+                    players.add(new Player(usernameField.getText(), passwordField.getText(), Integer.parseInt(balanceField.getText()),
                             wonHands = 0, tieHands = 0, handsplayed = 0));
                     saveFile(file);
                     JOptionPane.showMessageDialog(null, "Player created");
@@ -173,6 +167,7 @@ public class BlackJackGUI {
                     balanceField.setVisible(false);
                     startBLabel.setVisible(false);
                 }
+
 
         });
 
@@ -189,8 +184,8 @@ public class BlackJackGUI {
                 if (usr.equals(pl.getName()) && ps.equals(pl.getPassword())) {
                     frame.getContentPane().removeAll();
                     pname = pl.getName();
-                    sBalance = pl.getBalance();
-                    balance = pl.getBalance();
+                    sBalance = (int) pl.getBalance();
+                    balance = (int) pl.getBalance();
                     wonHands = pl.getWonHands();
                     tieHands = pl.getTieHands();
                     handsplayed = pl.getHandsplayed();
@@ -248,7 +243,7 @@ public class BlackJackGUI {
         frame.getContentPane().add(currentBalance);
 
         balanceLabel = new JLabel(); // Balance label, shows current balance
-        balanceLabel.setText(String.format("€%.2f", sBalance));
+        balanceLabel.setText(String.valueOf(sBalance));
         balanceLabel.setForeground(Color.ORANGE);
         balanceLabel.setFont(new Font("Arial", Font.BOLD, 40));
         balanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -268,12 +263,21 @@ public class BlackJackGUI {
         betAmountField.setText("");
         betAmountField.setBounds(790, 580, 89, 28);
         frame.getContentPane().add(betAmountField);
+        if (validAmount(balanceField.getText())) { // Check that balance is valid
+            balance = Integer.parseInt(balanceField.getText());
+        } else{
+            messenger.error( "You cannot bet fractions" );
+        }
+        if( balance < 100){
+            messenger.insufficientfunds( "You need to deposit more that the minimum bet" );
+        }
 
         JLabel enterBetLabel = new JLabel("Enter Bet:"); // Bet amount info label
         enterBetLabel.setFont(new Font("Arial", Font.BOLD, 14));
         enterBetLabel.setForeground(Color.WHITE);
         enterBetLabel.setBounds(689, 586, 100, 16);
         frame.getContentPane().add(enterBetLabel);
+
 
         dealButton = new JButton("Deal"); // Deal button
         dealButton.setBounds(679, 610, 200, 50);
@@ -303,17 +307,20 @@ public class BlackJackGUI {
             betAmount = Integer.parseInt(betAmountField.getText());
         } else {
             messenger.error( "You cannot bet fractions" );
+            continueGame();
         }
         if (betAmount < 100){
              messenger.warning("This table has a minimum bet of €100");
+             continueGame();
         }
 
         if (betAmount > balance) { // If bet is higher than balance
             messenger.error("You cannot bet more than your balance");
+            continueGame();
         }
         balance -= betAmount; // Subtract bet from balance
 
-        balanceLabel.setText(String.format("€%.2f", balance));
+        balanceLabel.setText(String.valueOf(balance));
 
         betAmountField.setEnabled(false);
         dealButton.setEnabled(false);
@@ -406,6 +413,7 @@ public class BlackJackGUI {
     }
 
     private void hit() { // Add another card to player cards, show the new card and check for any outcomes
+
         playerCards.myCards.add(deck.takeCard());
         updateCardPanels();
         if(playerCards.getTotalValue()>21){
@@ -560,14 +568,13 @@ public class BlackJackGUI {
 
         startButton.setEnabled(false);
         balanceField.setEnabled(true);
-
         showBetGui(); // Show bet controls
-
         roundCount = 0;
 
         deck = new Deck(); // Initialize dealer deck
         deck.Shoe(); // Add all the cards (default 6 decks)
         deck.shuffle(); // Shuffle
+
 
     }
 

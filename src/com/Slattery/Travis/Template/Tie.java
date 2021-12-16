@@ -7,7 +7,6 @@ public class Tie extends GameTemplate {
         updateDisplay("Tie");
         updateBalance(betAmount, CalcType.ADD_BAL);
         updateBalanceDisplay();
-        System.out.println(balance);
         tieHands++;
     }
 }

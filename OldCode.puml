@@ -1,0 +1,122 @@
+@startuml
+skinparam classAttributeIconSize 0
+class com.Slattery.Travis.CardArray {
+}
+class com.Slattery.Travis.Main {
++ {static} void main(String[])
++ void setVisible()
+}
+class com.Slattery.Travis.GameWindow {
+- JPanel backGround
+}
+class com.Slattery.Travis.GameWindow.ImagePanel {
+- Image img
++ void paintComponent(Graphics)
+}
+class com.Slattery.Travis.Player {
+~ ArrayList<Player> players
+- String username
+- double balance
+- int wonHands
++ void setUsername(String)
+~ String getName()
+~ String getPassword()
++ void setPassword(String)
+~ double getBalance()
+~ void setBalance(double)
+~ int getWonHands()
+~ void setWonHands(int)
+~ int getTieHands()
+~ void setTieHands(int)
+~ int getHandsplayed()
+~ void setHandsplayed(int)
++ String toString()
+}
+class com.Slattery.Travis.BlackJackGUI {
+~ {static} JFrame frame
++ {static} Deck deck
++ {static} Deck dealerCards
++ {static} Deck playerCards
+- {static} CardArray dealerCardPanel
+- {static} Card dealerHiddenCard
++ {static} double balance
+- {static} double sBalance
++ {static} int betAmount
+- {static} int roundCount
++ {static} int wonHands
++ {static} int tieHands
+- {static} int handsplayed
++ {static} String pname
+- {static} JTextField balanceField
+- {static} JButton startButton
+- {static} JButton endButton
++ {static} JTextField betAmountField
+- {static} JButton dealButton
++ {static} JLabel balanceLabel
+- {static} JLabel dLabel
+- {static} JLabel pLabel
+- {static} JButton hitButton
+- {static} JButton stayButton
+- {static} JButton dblButton
+- {static} JLabel amountBet
+- {static} JButton loginButton
+- {static} JButton saveButton
+- {static} JTextField usernameField
+- {static} JTextField passwordField
+- {static} JLabel lblBetAmountDesc
++ {static} JLabel gameInfo
+- {static} JButton continueButton
+- {static} JLabel shuffleInfo
+- {static} JLabel statsInfo
+- {static} JLabel newUserInfo
+- {static} JButton statsButton
+- {static} JButton returnButton
+- {static} File file
+- {static} ArrayList<Player> players
+- GameTemplate gameTemplate
++ {static} double getBal()
++ {static} double getBetAmount()
++ void loadGame()
+- {static} boolean validAmount(String)
+- void loadGuiObjects()
+- void showBetGui()
+- void deal()
+- void hit()
+- void dblBet()
+- void stand()
+- boolean gameOutcomes()
+- {static} void gameOver()
++ void continueGame()
+- void newGame()
+- {static} void updateCardPanels()
++ {static} int heightFromWidth(int)
+- {static} void actionPerformed(ActionEvent)
+- {static} void stats()
+- {static} void removeStats()
+- {static} void saveFile(File)
+- {static} void loadFile(File)
+}
+class com.Slattery.Travis.Card {
++ String rank
+~ int value
+~ void print()
+~ String getFileName()
+}
+class com.Slattery.Travis.Deck {
++ ArrayList<Card> myCards
+~ void Shoe()
++ Card takeCard()
+~ void shuffle()
++ int getTotalValue()
++ int getNumAces()
+~ int getCount()
++ void printDeck()
+}
+
+
+com.Slattery.Travis.JPanel <|-- com.Slattery.Travis.CardArray
+com.Slattery.Travis.JFrame <|-- com.Slattery.Travis.GameWindow
+com.Slattery.Travis.GameWindow +.. com.Slattery.Travis.GameWindow.ImagePanel
+com.Slattery.Travis.JPanel <|-- com.Slattery.Travis.GameWindow.ImagePanel
+java.io.Serializable <|.. com.Slattery.Travis.Player
+@enduml
